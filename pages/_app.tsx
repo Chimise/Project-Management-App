@@ -4,7 +4,7 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
 import '@fontsource/roboto/900.css'
-import DashboardLayout from '../components/common/DashboardLayout/DashboardLayout';
+import DashboardLayout from '../components/common/DashboardLayout';
 
 
 function MyApp({ Component, pageProps }: AppProps) {

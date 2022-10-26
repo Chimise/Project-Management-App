@@ -8,7 +8,7 @@ export const dashboardNavVariant: Variants = {
         duration: 0.8,
         damping: 8,
         mass: 0.4,
-        stiffness: 100
+        stiffness: 100,
       }
     },
     initial: {
@@ -16,7 +16,7 @@ export const dashboardNavVariant: Variants = {
       transition: {
         type: 'spring',
         duration: 0.8,
-        damping: 8,
+        damping: 10,
         mass: 0.4,
         stiffness: 100,
       }

@@ -5,6 +5,9 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ['Roboto', 'Arial', 'sans-serif']
+      },
+      colors: {
+        primary: 'var(--primary)'
       }
     },
   },
