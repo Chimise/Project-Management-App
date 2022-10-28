@@ -1,3 +1,10 @@
 :root {
     --primary: rgba(20, 184, 166);
 }
+
+body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+
+}

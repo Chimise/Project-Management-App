@@ -11,7 +11,7 @@ import {
   Squares2X2Icon,
 
 } from "@heroicons/react/24/solid";
-import Badge from "../../ui/Badge/Badge";
+import Pill from "../../ui/Pill/Pill";
 
 interface NavLinkProps extends LinkProps {
   onClick?: (event: React.MouseEvent<any>) => void;
@@ -19,10 +19,10 @@ interface NavLinkProps extends LinkProps {
   className?: string;
   icon: string;
   collapsed: boolean;
-  badgeContent?: any;
+  pillContent?: any;
 }
 
-const icons: {
+export const icons: {
   [key: string]: JSXElementConstructor<React.ComponentProps<"svg">>;
 } = {
   dashboard: Squares2X2Icon,
@@ -40,7 +40,7 @@ const NavLink = ({
   icon,
   className,
   collapsed,
-  badgeContent,
+  pillContent,
 }: NavLinkProps) => {
   const router = useRouter();
   const isActive = router.pathname === href;
@@ -76,10 +76,10 @@ const NavLink = ({
           
           {!collapsed && <span className="flex-1">{children}</span>}
           
-          {badgeContent && (
-            <Badge collapsed={collapsed} className={cn("shrink-0", {'group-hover:bg-gray-400': !collapsed})}>
-              {badgeContent}
-            </Badge>
+          {pillContent && (
+            <Pill collapsed={collapsed} className={cn("shrink-0", {'group-hover:bg-gray-400': !collapsed})}>
+              {pillContent}
+            </Pill>
           )}
         </span>
       </a>

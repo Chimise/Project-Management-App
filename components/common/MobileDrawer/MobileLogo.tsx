@@ -1,4 +1,5 @@
 import { Square3Stack3DIcon } from "@heroicons/react/24/outline";
+import Badge from '../../ui/Badge';
 
 interface MobileLogoProps {
   collapsed?: boolean;
@@ -7,9 +8,9 @@ interface MobileLogoProps {
 const MobileLogo = ({ collapsed = false }: MobileLogoProps) => {
   return (
     <div className="flex items-center space-x-2">
-      <div className="inline-flex items-center justify-center rounded-full bg-primary p-2">
+      <Badge>
         <Square3Stack3DIcon className="w-5 h-5 text-white" />
-      </div>
+      </Badge>
       {!collapsed && (<div className="text-primary font-bold text-2xl font-sans">
         taskr
       </div>)}
