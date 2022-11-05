@@ -1,6 +1,6 @@
 import React from "react";
 import cn from "classnames";
-import { motion, AnimateSharedLayout } from "framer-motion";
+import { motion } from "framer-motion";
 
 interface PillProps {
   children: React.ReactNode;
@@ -10,7 +10,7 @@ interface PillProps {
 
 const Pill = ({ children, className, collapsed }: PillProps) => {
   return (
-    <AnimateSharedLayout>
+    <>
       {collapsed && (
         <motion.svg
           key="icon"
@@ -30,7 +30,7 @@ const Pill = ({ children, className, collapsed }: PillProps) => {
       {!collapsed && (
         <motion.div
           key="badge"
-          layoutId="badge"
+          layoutId="pill"
           className={cn(
             "py-px px-4 bg-orange-200 rounded-xl text-sm",
             className
@@ -39,7 +39,7 @@ const Pill = ({ children, className, collapsed }: PillProps) => {
           {children}
         </motion.div>
       )}
-    </AnimateSharedLayout>
+    </>
   );
 };
 

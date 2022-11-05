@@ -4,6 +4,7 @@ import MobileLogo from './MobileLogo';
 import {XMarkIcon} from '@heroicons/react/24/solid';
 import {minorLinks, mainLinks} from '../DashboardLayout';
 import NavLink from '../NavLink';
+import {Icons} from '../../../utils';
 
 interface MobileDashboardLayoutProps {
   visible: boolean;
@@ -94,13 +95,13 @@ const MobileDrawer = ({ visible, onClose }: MobileDashboardLayoutProps) => {
           </div>
           <nav className="overflow-y-auto h-[calc(100vh-72px)] py-8">
           <div className="mb-28">
-                  {mainLinks.map(link => (
-                    <NavLink className="capitalize" key={link} collapsed={false} pillContent={link === 'dashboard' ? null : 2} href={`/dashboard/${link === 'dashboard' ? '' : link}`} icon={link}>{link}</NavLink>
+                  {mainLinks.map(({href, title, icon}) => (
+                    <NavLink className="capitalize" key={href} collapsed={false} pillContent={href === 'dashboard' ? null : 2} href={`/dashboard/${href === 'dashboard' ? '' : href}`} icon={icon}>{title}</NavLink>
                   ))}
               </div>
               <div>
-              {minorLinks.map(link => (
-                    <NavLink className="capitalize" key={link} collapsed={false} pillContent={null} href={`/dashboard/${link}`} icon={link}>{link}</NavLink>
+              {minorLinks.map(({href, title, icon}) => (
+                    <NavLink className="capitalize" key={href} collapsed={false} pillContent={null} href={`/dashboard/${href}`} icon={icon}>{title}</NavLink>
                   ))}
               </div>
           </nav>

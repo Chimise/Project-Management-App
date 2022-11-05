@@ -8,13 +8,22 @@ import { dashboardNavVariant } from "../../../animations";
 import Logo from "../Logo";
 import NavLink from "../NavLink";
 import MobileHeader from "../MobileDrawer/MobileHeader";
+import DashboardFooter from "../DashboardFooter";
+import { Icons } from "../../../utils";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
 }
 
-export const mainLinks = ["dashboard", "projects", "reports", "messages"];
-export const minorLinks = ["setting", "logout"];
+interface Link {
+  icon: Icons;
+  href: string;
+  title: string;
+}
+
+export const mainLinks: Link[] = [{icon: 'dashboard', href: 'dashboard', title: 'Dashboard'}, {icon: 'project', href: 'project', title: 'Projects'}, {icon: 'report', href: 'report', title: 'Reports'}, {icon: 'message', href: 'message', title: 'Messages'}]
+export const minorLinks: Link[] = [{icon: 'setting', href: 'setting', title: 'Setting'}, {icon: 'logout', href: 'logout', title: 'Logout'}]
+
 
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -62,32 +71,32 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                   <Logo collapse={isCollapsed} />
                 </div>
               </div>
-              <div className="h-[calc(100vh-124px)] overflow-auto flex flex-col justify-between">
-                <div className="h-[65%]">
-                  {mainLinks.map((link) => (
+              <div className="h-[calc(100vh-124px)] space-y-14 overflow-auto flex flex-col justify-between">
+                <div className="flex-4">
+                  {mainLinks.map(({title, href, icon}) => (
                     <NavLink
                       className="capitalize"
-                      key={link}
+                      key={href}
                       collapsed={isCollapsed}
-                      pillContent={link === "dashboard" ? null : 2}
-                      href={`/dashboard/${link === "dashboard" ? "" : link}`}
-                      icon={link}
+                      pillContent={href === "dashboard" ? null : 2}
+                      href={`/dashboard/${href === "dashboard" ? "" : href}`}
+                      icon={icon}
                     >
-                      {link}
+                      {title}
                     </NavLink>
                   ))}
                 </div>
-                <div className="h-[35%]">
-                  {minorLinks.map((link) => (
+                <div className="flex-1">
+                  {minorLinks.map(({href, title, icon}) => (
                     <NavLink
                       className="capitalize"
-                      key={link}
+                      key={href}
                       collapsed={isCollapsed}
                       pillContent={null}
-                      href={`/dashboard/${link}`}
-                      icon={link}
+                      href={`/dashboard/${href}`}
+                      icon={icon}
                     >
-                      {link}
+                      {title}
                     </NavLink>
                   ))}
                 </div>
@@ -95,15 +104,19 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
             </div>
           </motion.div>
         </motion.nav>
-        <motion.div layout className="md:flex-1">
-          <main className="bg-white h-full">
-            <MobileHeader
-              onOpen={openMenuHandler}
-              onClose={closeMenuHandler}
-              isVisible={isVisible}
-            />
-            {children}
-          </main>
+        <motion.div
+          layout
+          className="md:flex-1 flex flex-col h-screen overflow-hidden"
+        >
+          <MobileHeader
+            onOpen={openMenuHandler}
+            onClose={closeMenuHandler}
+            isVisible={isVisible}
+          />
+          <div className="bg-white flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+            <main className="flex-1">{children}</main>
+            <DashboardFooter />
+          </div>
         </motion.div>
       </LayoutGroup>
     </div>

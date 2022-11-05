@@ -53,11 +53,11 @@ const DashboardHeader = ({ title }: DashboardHeaderProps) => {
   return (
     <div className="relative my-0 md:my-2">
     <header className="flex items-center justify-between py-2">
-      <p className="text-gray-800 text-base font-normal">
+      <p className="text-gray-800 text-sm sm:text-base font-normal">
         Welcome to your <span className="font-medium text-black">{title}</span>
       </p>
       <div className="flex items-center space-x-2">
-      <span className="font-bold text-base">
+      <span className="hidden sm:inline-block font-bold text-base">
           Chisom
         </span>
         <Badge
@@ -80,7 +80,7 @@ const DashboardHeader = ({ title }: DashboardHeaderProps) => {
       </div>
     </header>
     <AnimatePresence>
-      {isHovering && <motion.div className="absolute text-sm text-white rounded-md text-center bg-primary z-10 -bottom- right-0 p-2 w-40" variants={panelVariant} initial="hidden" animate="show" exit="hidden">
+      {isHovering && <motion.div className="hidden md:block absolute text-sm text-white rounded-md text-center bg-primary z-10 -bottom- right-0 p-2 w-40" variants={panelVariant} initial="hidden" animate="show" exit="hidden">
           Beeb-boop! Would you like to change your profile settings?
       </motion.div>}
       </AnimatePresence>

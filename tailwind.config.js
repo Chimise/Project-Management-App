@@ -7,7 +7,10 @@ module.exports = {
         sans: ['Roboto', 'Arial', 'sans-serif']
       },
       colors: {
-        primary: 'var(--primary)'
+        primary: 'var(--primary)',
+        completed: 'var(--completed)',
+        progress: 'var(--progress)'
+
       }
     },
   },

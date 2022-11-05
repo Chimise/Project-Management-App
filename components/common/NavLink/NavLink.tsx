@@ -1,37 +1,20 @@
-import { JSXElementConstructor } from "react";
 import Link, { LinkProps } from "next/link";
 import { useRouter } from "next/router";
 import cn from "classnames";
-import {
-  BoltIcon,
-  Cog6ToothIcon,
-  EnvelopeIcon,
-  PencilSquareIcon,
-  ArrowUpTrayIcon,
-  Squares2X2Icon,
-
-} from "@heroicons/react/24/solid";
 import Pill from "../../ui/Pill/Pill";
+import {icons, Icons} from '../../../utils'
+
+
 
 interface NavLinkProps extends LinkProps {
   onClick?: (event: React.MouseEvent<any>) => void;
   children: React.ReactNode;
   className?: string;
-  icon: string;
+  icon: Icons;
   collapsed: boolean;
   pillContent?: any;
 }
 
-export const icons: {
-  [key: string]: JSXElementConstructor<React.ComponentProps<"svg">>;
-} = {
-  dashboard: Squares2X2Icon,
-  projects: BoltIcon,
-  reports: PencilSquareIcon,
-  messages: EnvelopeIcon,
-  setting: Cog6ToothIcon,
-  logout: ArrowUpTrayIcon,
-};
 
 const NavLink = ({
   href,
@@ -45,7 +28,7 @@ const NavLink = ({
   const router = useRouter();
   const isActive = router.pathname === href;
 
-  const Icon = icons[icon] || Squares2X2Icon;
+  const Icon = icons[icon];
 
   const clickHandler = (event: React.MouseEvent<any>) => {
     if (onClick) {
