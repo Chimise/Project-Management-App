@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { motion, Variants, AnimatePresence } from "framer-motion";
 import Badge from '../../ui/Badge';
+import {useRouter} from 'next/router'
+import {ArrowLeftIcon} from '@heroicons/react/24/outline';
 
 interface DashboardHeaderProps {
-  title: string;
+  title?: string;
+  goBack?: boolean;
 }
 
 const buttonVariant: Variants = {
@@ -42,8 +45,9 @@ const panelVariant: Variants = {
   }
 }
 
-const DashboardHeader = ({ title }: DashboardHeaderProps) => {
+const DashboardHeader = ({ title, goBack = false }: DashboardHeaderProps) => {
   const [isHovering, setIsHovering] = useState(false);
+  const {back} = useRouter();
   const onEnterHandler = () => {
     setIsHovering(true);
   };
@@ -53,9 +57,12 @@ const DashboardHeader = ({ title }: DashboardHeaderProps) => {
   return (
     <div className="relative my-0 md:my-2">
     <header className="flex items-center justify-between py-2">
-      <p className="text-gray-800 text-sm sm:text-base font-normal">
+      {!goBack && <p className="text-gray-800 text-sm sm:text-base font-normal">
         Welcome to your <span className="font-medium text-black">{title}</span>
-      </p>
+      </p>}
+      {goBack && <Badge color='bg-gray-100' onClick={() => back()}>
+        <ArrowLeftIcon className="stroke-gray-800 w-5 h-5 stroke-2" />
+        </Badge>}
       <div className="flex items-center space-x-2">
       <span className="hidden sm:inline-block font-bold text-base">
           Chisom

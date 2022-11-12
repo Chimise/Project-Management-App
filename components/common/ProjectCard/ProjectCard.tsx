@@ -6,17 +6,20 @@ import { icons } from "../../../utils";
 import IconBox from "../IconBox";
 import PrimaryCard from "../../ui/PrimaryCard";
 import { Project } from "../../../store/TaskContext";
+import { useRouter } from "next/router";
+import useTaskStatus from '../../../hooks/useTaskStatus';
 
 interface ProjectCardProps {
   project: Project;
+  className?: string;
 }
 
-const ProjectCard = ({project }: ProjectCardProps) => {
-  const created = project.tasks.filter((proj) => proj.status === 0).length;
-  const progress = project.tasks.filter((proj) => proj.status === 1).length;
-  const completed = project.tasks.filter((proj) => proj.status === 2).length;
+const ProjectCard = ({ project, className }: ProjectCardProps) => {
+  const getStatus = useTaskStatus();
+  const {created, progress, completed} = getStatus(project.id);
 
   const [isHovering, setIsHovering] = useState(false);
+  const router = useRouter();
   const handleMouseEnter = () => {
     setIsHovering(true);
   };
@@ -29,7 +32,8 @@ const ProjectCard = ({project }: ProjectCardProps) => {
     <PrimaryCard
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className={cn("flex w-64 p-2 h-48 overflow-hidden flex-col group")}
+      className={cn("flex p-2 overflow-hidden flex-col group", className)}
+      onClick={() => router.push(`/dashboard/projects/${project.id}`)}
     >
       <div className="flex-1 flex flex-col items-center justify-evenly">
         <Badge>

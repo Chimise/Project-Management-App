@@ -16,6 +16,7 @@
     "formik": "^2.2.9",
     "framer-motion": "^7.6.1",
     "knex": "^2.3.0",
+    "moment": "^2.29.4",
     "next": "12.3.1",
     "next-connect": "^0.13.0",
     "pg": "^8.8.0",

@@ -6,13 +6,16 @@ import "@fontsource/roboto/700.css";
 import "@fontsource/roboto/900.css";
 import DashboardLayout from "../components/common/DashboardLayout";
 import TaskContextProvider from "../store/TaskContext";
+import InfoContextProvider from "../store/InfoContext";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <TaskContextProvider>
-      <DashboardLayout>
-        <Component {...pageProps} />
+      <InfoContextProvider>
+        <DashboardLayout>
+          <Component {...pageProps} />
         </DashboardLayout>
+      </InfoContextProvider>
     </TaskContextProvider>
   );
 }

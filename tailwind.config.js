@@ -7,12 +7,16 @@ module.exports = {
         sans: ['Roboto', 'Arial', 'sans-serif']
       },
       colors: {
-        primary: 'var(--primary)',
-        completed: 'var(--completed)',
-        progress: 'var(--progress)'
+        primary: '#14b8a6',
+        completed: '#fb923c',
+        progress: '#15803d'
 
+      },
+      fontSize: {
+        'xxs': ['0.625rem', '0.75rem']
       }
     },
   },
   plugins: [require('@tailwindcss/forms')],
 }
+

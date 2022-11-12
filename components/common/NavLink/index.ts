@@ -1,1 +1,1 @@
-export {default, icons} from './NavLink';
+export {default} from './NavLink';

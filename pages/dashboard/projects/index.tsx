@@ -1,12 +1,12 @@
 import React, {useRef} from 'react';
-import Container from '../../components/ui/Container';
-import DashboardTitle from '../../components/common/DashboardTitle';
-import DashboardHeader from '../../components/common/DashboardHeader';
-import Input from '../../components/ui/Input';
-import Button from '../../components/ui/Button';
-import useProjects from '../../hooks/useProjects';
+import Container from '../../../components/ui/Container';
+import DashboardTitle from '../../../components/common/DashboardTitle';
+import DashboardHeader from '../../../components/common/DashboardHeader';
+import Input from '../../../components/ui/Input';
+import Button from '../../../components/ui/Button';
+import useProjects from '../../../hooks/useProjects';
 import { useRouter } from 'next/router';
-import ProjectCard from '../../components/common/ProjectCard';
+import ProjectCard from '../../../components/common/ProjectCard';
 
 
 const AddProjectPage = () => {
@@ -29,13 +29,15 @@ const AddProjectPage = () => {
         <DashboardHeader title="Projects" />
         <DashboardTitle className='mt-8' icon='project' title="Projects" />
 
-        <form onSubmit={addProjectHandler} className='flex flex-col items-start space-y-3 sm:space-y-0 sm:flex-row mt-6 sm:items-end sm:space-x-4 sm:px-6'>
+        <form onSubmit={addProjectHandler} className='flex flex-col items-start space-y-3 md:space-y-0 sm:px-2 md:flex-row mt-6 md:items-end md:space-x-4 md:px-6'>
             <Input ref={inputRef} placeholder='Create A project' />
             <Button>Create Project</Button>
         </form>
-        <div className='mt-16'>
+        <div className='mt-16 space-y-4 sm:space-y-0 sm:flex sm:flex-wrap sm:-mx-3'>
             {projects.map(project => (
-                <ProjectCard key={project.id} project={project} />
+                <div key={project.id} className='w-full sm:p-3 sm:w-1/2 lg:w-1/3'>
+                    <ProjectCard className='h-48 w-full sm:w-auto' project={project} />
+                </div>
             ))}
         </div>
     </Container>)

@@ -1,8 +1,3 @@
-:root {
-    --primary: rgba(20, 184, 166);
-    --progress: #fb923c;
-    --completed: #15803d;
-}
 
 body {
     width: 100vw;

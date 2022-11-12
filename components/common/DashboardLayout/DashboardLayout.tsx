@@ -10,6 +10,8 @@ import NavLink from "../NavLink";
 import MobileHeader from "../MobileDrawer/MobileHeader";
 import DashboardFooter from "../DashboardFooter";
 import { Icons } from "../../../utils";
+import AddProjectLink from "../AddProjectLink";
+import useInfo from "../../../hooks/useInfo";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -21,13 +23,21 @@ interface Link {
   title: string;
 }
 
-export const mainLinks: Link[] = [{icon: 'dashboard', href: 'dashboard', title: 'Dashboard'}, {icon: 'project', href: 'project', title: 'Projects'}, {icon: 'report', href: 'report', title: 'Reports'}, {icon: 'message', href: 'message', title: 'Messages'}]
-export const minorLinks: Link[] = [{icon: 'setting', href: 'setting', title: 'Setting'}, {icon: 'logout', href: 'logout', title: 'Logout'}]
-
+export const mainLinks: Link[] = [
+  { icon: "dashboard", href: "dashboard", title: "Dashboard" },
+  { icon: "project", href: "projects", title: "Projects" },
+  { icon: "report", href: "reports", title: "Reports" },
+  { icon: "message", href: "messages", title: "Messages" },
+];
+export const minorLinks: Link[] = [
+  { icon: "setting", href: "setting", title: "Setting" },
+  { icon: "logout", href: "logout", title: "Logout" },
+];
 
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const { unreadMessages, unreadReports } = useInfo();
 
   const openMenuHandler = () => {
     setIsVisible(true);
@@ -72,27 +82,47 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                 </div>
               </div>
               <div className="h-[calc(100vh-124px)] space-y-14 overflow-auto flex flex-col justify-between">
-                <div className="flex-4">
-                  {mainLinks.map(({title, href, icon}) => (
-                    <NavLink
-                      className="capitalize"
-                      key={href}
-                      collapsed={isCollapsed}
-                      pillContent={href === "dashboard" ? null : 2}
-                      href={`/dashboard/${href === "dashboard" ? "" : href}`}
-                      icon={icon}
-                    >
-                      {title}
-                    </NavLink>
-                  ))}
-                </div>
                 <div className="flex-1">
-                  {minorLinks.map(({href, title, icon}) => (
+                  <NavLink
+                    className="capitalize"
+                    collapsed={isCollapsed}
+                    href="/dashboard"
+                    icon="dashboard"
+                  >
+                    Dashboard
+                  </NavLink>
+                  <AddProjectLink
+                    collapsed={isCollapsed}
+                    href={"/dashboard/projects"}
+                    icon="project"
+                  >
+                    Projects
+                  </AddProjectLink>
+                  <NavLink
+                    className="capitalize"
+                    collapsed={isCollapsed}
+                    pillContent={unreadReports}
+                    href="/dashboard/reports"
+                    icon="report"
+                  >
+                    Reports
+                  </NavLink>
+                  <NavLink
+                    className="capitalize"
+                    collapsed={isCollapsed}
+                    pillContent={unreadMessages}
+                    href="/dashboard/messages"
+                    icon="message"
+                  >
+                    Messages
+                  </NavLink>
+                </div>
+                <div className="flex-1 flex flex-col justify-center">
+                  {minorLinks.map(({ href, title, icon }) => (
                     <NavLink
                       className="capitalize"
                       key={href}
                       collapsed={isCollapsed}
-                      pillContent={null}
                       href={`/dashboard/${href}`}
                       icon={icon}
                     >

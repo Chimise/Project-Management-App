@@ -18,7 +18,7 @@ const DashboardTitle = ({
 }: DashboardTitleProps) => {
   const Icon = icons[icon];
   return (
-    <div className={cn("flex items-start space-x-4", className)}>
+    <div className={cn("flex space-x-4", {'items-center': !children, 'items-start': children}, className)}>
       <Badge>
         <Icon className="w-5 h-5 sm:w-8 sm:h-8 text-white" />
       </Badge>
