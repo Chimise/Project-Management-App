@@ -29,6 +29,11 @@ export const icons: {
   };
 
 export type Status = 0 | 1 | 2;
+export interface BaseSchema {
+  id: number;
+  created_at: string;
+  updated_at: string;
+}
 
 let counter = 0;
   
@@ -41,4 +46,9 @@ export const generateDate = () => {
   const date = new Date().toISOString();
   return date;
 };
+
+export const getQuery = (query: string | string[] | undefined) => {
+  query = Array.isArray(query) ? query[0] : query;
+  return query;
+}
 

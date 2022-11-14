@@ -40,7 +40,7 @@ const ReportPage = () => {
           <div className="w-[90%] lg:w-[80%] mr-auto">
           <p className="text-gray-800 text-sm md:text-base">{report.content}</p>
           <div className="mt-2 text-justify text-primary text-xs md:text-sm font-medium flex items-center justify-between">
-            <span>Botty Bot</span>
+            <span className="bg-primary text-white p-1">Update</span>
             <span>{moment(report.createdAt, true).format('dddd D MMMM, YYYY | HH:ss')}</span>
           </div>
           </div>

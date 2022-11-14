@@ -10,11 +10,14 @@
   },
   "dependencies": {
     "@fontsource/roboto": "^4.5.8",
+    "@hapi/boom": "^10.0.0",
     "@headlessui/react": "^1.7.3",
     "@heroicons/react": "^2.0.12",
+    "bcryptjs": "^2.4.3",
     "classnames": "^2.3.2",
     "formik": "^2.2.9",
     "framer-motion": "^7.6.1",
+    "jsonwebtoken": "^8.5.1",
     "knex": "^2.3.0",
     "moment": "^2.29.4",
     "next": "12.3.1",
@@ -27,6 +30,8 @@
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.3",
+    "@types/bcryptjs": "^2.4.2",
+    "@types/jsonwebtoken": "^8.5.9",
     "@types/node": "18.8.3",
     "@types/react": "18.0.21",
     "@types/react-dom": "18.0.6",
