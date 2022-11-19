@@ -1,4 +1,4 @@
-import next, { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 import { RequestHandler } from "next-connect";
 import * as yup from "yup";
 import User from "../models/User";

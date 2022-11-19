@@ -53,5 +53,17 @@ export const create: RequestHandler<ExtendedRequest, NextApiResponse> = async (r
 }
 
 export const deleteOne: RequestHandler<ExtendedRequest, NextApiResponse> = async (req, res, next) => {
-    
+    try {
+      const id = parseInt(getQuery(req.query.id)!);
+      const project = await Project.deleteOne({id, user_id: req.user.id});
+      if(!project) {
+        return res.status(404).json(Boom.notFound("Project not found"));
+      }
+      return res.json(project);
+    } catch (error) {
+      
+        return next(error);
+    }
 }
+
+

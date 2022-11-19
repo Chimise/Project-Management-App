@@ -1,24 +1,14 @@
 import {NextApiRequest, NextApiResponse} from 'next'; 
 import {RequestHandler} from 'next-connect'
 import jwt from 'jsonwebtoken';
-import * as yup from 'yup';
 import User from '../models/User';
 import Boom from '@hapi/boom';
+import { logInSchema, signUpSchema } from '../utils/validate';
 
-const loginSchema = yup.object({
-    name: yup.string().required("Enter your user name"),
-    email: yup.string().email("Enter a valid email address").required('Your email is required'),
-    password: yup.string().trim().min(5, 'Your password should be at least 5 characters').required("Enter your password")
-});
-
-const signUpSchema = yup.object({
-    email: yup.string().email("Enter a valid email address").required('Your email is required'),
-    password: yup.string().trim().min(5, "Your password should be at least 5 characters").required('Enter your password')
-})
 
 export const signUp: RequestHandler<NextApiRequest, NextApiResponse> = async (req, res, next) => {
     try {
-        const body = await loginSchema.validate(req.body);
+        const body = await signUpSchema.validate(req.body);
         const user = await User.findOne({email: body.email});
         if(user) {
             return res.status(400).json(Boom.badRequest("A user with this email already exist"));
@@ -35,7 +25,7 @@ export const signUp: RequestHandler<NextApiRequest, NextApiResponse> = async (re
 
 export const logIn: RequestHandler<NextApiRequest, NextApiResponse> = async (req, res, next) => {
     try {
-        const body = await signUpSchema.validate(req.body);
+        const body = await logInSchema.validate(req.body);
         const user = await User.findOne({email: body.email});
         if(!user) {
             return res.status(401).json(Boom.unauthorized("Invalid Credentials"));
