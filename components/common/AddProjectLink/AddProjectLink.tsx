@@ -8,6 +8,7 @@ import { NavLinkProps } from "../NavLink/NavLink";
 import { PlayIcon, PlusIcon } from "@heroicons/react/24/solid";
 import useProjects from "../../../hooks/useProjects";
 import ProjectList from './ProjectList';
+import useAddProject from '../../../hooks/useAddProject';
 
 type AddProjectLinkProps = Omit<NavLinkProps, "pillContent">;
 
@@ -23,27 +24,21 @@ const AddProjectLink = ({
   const router = useRouter();
   const isActive = router.pathname === href;
   const Icon = icons[icon];
-  const { addProject, projects } = useProjects();
+  const { projects } = useProjects();
+  const {sendRequest: addProject} = useAddProject(false);
 
-  const clickHandler = (event: React.MouseEvent<any>) => {
-    if (onClick) {
-      onClick(event);
-    }
-  };
-
-  const handleSubmit = (event: React.MouseEvent<any>) => {
+  const handleSubmit = async (event: React.MouseEvent<any>) => {
     if (!inputRef.current || inputRef.current.value.length === 0) {
       return;
     }
     console.log(inputRef.current.value);
-    addProject(inputRef.current.value);
+    await addProject({name: inputRef.current.value});
     inputRef.current.value = '';
   };
 
   return (
-    <Link href={href} passHref>
       <Disclosure
-        as="a"
+        as="div"
         className={cn(
           "inline-flex flex-col space-y-0.5 w-full text-lg group overflow-hidden transition-color duration-150 text-md",
           {
@@ -53,7 +48,7 @@ const AddProjectLink = ({
           className
         )}
         defaultOpen={isActive}
-        onClick={clickHandler}
+        onClick={() => router.push(href)}
       >
         {({ open }) => (
           <>
@@ -103,15 +98,14 @@ const AddProjectLink = ({
                     <PlusIcon className="w-4 h-4 text-black" />
                   </button>
                 </div>
-                <div className="w-full space-y-1">
+                {projects && <div className="w-full space-y-1">
                     {projects.map(proj => <ProjectList key={proj.id} project={proj} />)}
-                </div>
+                </div>}
               </div>
             </Disclosure.Panel>
           </>
         )}
       </Disclosure>
-    </Link>
   );
 };
 

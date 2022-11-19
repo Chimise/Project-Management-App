@@ -4,7 +4,8 @@ import MobileLogo from './MobileLogo';
 import {XMarkIcon} from '@heroicons/react/24/solid';
 import {minorLinks, mainLinks} from '../DashboardLayout';
 import NavLink from '../NavLink';
-import {Icons} from '../../../utils';
+import useInfo from '../../../hooks/useInfo';
+import useAuth from '../../../hooks/useAuth';
 
 interface MobileDashboardLayoutProps {
   visible: boolean;
@@ -69,6 +70,8 @@ const containerVariant:Variants = {
 }
 
 const MobileDrawer = ({ visible, onClose }: MobileDashboardLayoutProps) => {
+  const {unreadMessages, unreadReports} = useInfo();
+  const {logoutHandler} = useAuth();
   return (
     <AnimatePresence>
       {visible && <motion.div key="drawer" variants={containerVariant} initial="hidden" animate="visible" exit="exit" className="z-50 fixed inset-0 overflow-hidden">
@@ -96,14 +99,16 @@ const MobileDrawer = ({ visible, onClose }: MobileDashboardLayoutProps) => {
           <nav className="overflow-y-auto h-[calc(100vh-72px)] py-8">
           <div className="mb-28">
                   {mainLinks.map(({href, title, icon}) => (
-                    <NavLink className="capitalize" key={href} collapsed={false} pillContent={href === 'dashboard' ? null : 2} href={`/dashboard/${href === 'dashboard' ? '' : href}`} icon={icon}>{title}</NavLink>
+                    <NavLink className="capitalize" key={href} collapsed={false} pillContent={href === 'messages' ? unreadMessages : href === 'reports' ? unreadReports : undefined} href={`/dashboard/${href === 'dashboard' ? '' : href}`} icon={icon}>{title}</NavLink>
                   ))}
               </div>
               <div>
               {minorLinks.map(({href, title, icon}) => (
-                    <NavLink className="capitalize" key={href} collapsed={false} pillContent={null} href={`/dashboard/${href}`} icon={icon}>{title}</NavLink>
+                    <NavLink className="capitalize" key={href} collapsed={false} href={`/dashboard/${href}`} icon={icon}>{title}</NavLink>
                   ))}
+                  <NavLink className="capitalize" onClick={logoutHandler} collapsed={false} icon={'logout'}>Logout</NavLink>
               </div>
+              
           </nav>
         </motion.div>
       </motion.div>}

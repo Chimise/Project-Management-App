@@ -12,6 +12,9 @@ import DashboardFooter from "../DashboardFooter";
 import { Icons } from "../../../utils";
 import AddProjectLink from "../AddProjectLink";
 import useInfo from "../../../hooks/useInfo";
+import useAuth from '../../../hooks/useAuth';
+import useUI from '../../../hooks/useUI';
+import Toast from '../../ui/Toast';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -31,13 +34,14 @@ export const mainLinks: Link[] = [
 ];
 export const minorLinks: Link[] = [
   { icon: "setting", href: "setting", title: "Setting" },
-  { icon: "logout", href: "logout", title: "Logout" },
 ];
 
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const { unreadMessages, unreadReports } = useInfo();
+  const {logoutHandler} = useAuth();
+  const {status, toastIsVisible, message, closeToastHandler} = useUI();
 
   const openMenuHandler = () => {
     setIsVisible(true);
@@ -129,6 +133,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                       {title}
                     </NavLink>
                   ))}
+                  <NavLink onClick={logoutHandler} className="capitalize" collapsed={false} icon={'logout'}>Logout</NavLink>
                 </div>
               </div>
             </div>
@@ -143,6 +148,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
             onClose={closeMenuHandler}
             isVisible={isVisible}
           />
+          <Toast isVisible={toastIsVisible} status={status} message={message} onClose={closeToastHandler} />
           <div className="bg-white flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
             <main className="flex-1">{children}</main>
             <DashboardFooter />

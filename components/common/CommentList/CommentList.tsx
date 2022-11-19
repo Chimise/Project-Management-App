@@ -1,55 +1,19 @@
 import React from 'react';
-import {Comment} from '../../../store/TaskContext/TaskContext';
 import AddComment from '../AddComment';
 import {EnvelopeOpenIcon} from '@heroicons/react/24/solid';
 import {Status} from '../../../utils';
-import CommentCard from '../CommentCard';
+import CommentCard, {Comment} from '../CommentCard';
 
 interface CommentListProps {
-    comments: Array<Comment>,
-    onAddComment: React.Dispatch<React.SetStateAction<Comment[]>>,
+    comments: Array<Comment>;
+    onAddComment: (comment: Comment) => void;
+    onLikeComment: (id: number) => void;
+    onAddFavorite: (id: number) => void;
+    onRemoveComment: (id: number) => void;
     status: Status
 }
 
-const CommentList = ({comments, onAddComment, status}: CommentListProps) => {
-    const addCommentHandler = (comment: Comment) => {
-        onAddComment(prevComments => {
-            return [comment, ...prevComments]
-        });
-    }
-
-    const likeCommentHandler = (id: string) => {
-        const commentIndex = comments.findIndex(comment => comment.id === id);
-        if(commentIndex === -1) {
-            return;
-        }
-        const newComments = [...comments];
-        newComments[commentIndex] = {
-            ...newComments[commentIndex],
-            like: true
-        }
-        onAddComment(newComments);
-    }
-
-    const favouriteCommentHandler = (id: string) => {
-        const commentIndex = comments.findIndex(comment => comment.id === id);
-        if(commentIndex === -1) {
-            return;
-        }
-        const newComments = [...comments];
-        newComments[commentIndex] = {
-            ...newComments[commentIndex],
-            favourite: true
-        }
-        onAddComment(newComments);
-    }
-
-    const removeCommentHandler = (id: string) => {
-        onAddComment(prevComments => {
-            return prevComments.filter(comment => comment.id !== id);
-        })
-    }
-
+const CommentList = ({comments, onAddComment, onLikeComment, onRemoveComment, onAddFavorite, status}: CommentListProps) => {
     return <div className='space-y-4'>
         {comments.length === 0 && <div className='flex flex-col text-gray-700 items-center justify-evenly space-y-4'>
             <EnvelopeOpenIcon className='w-10 h-10' />
@@ -57,9 +21,9 @@ const CommentList = ({comments, onAddComment, status}: CommentListProps) => {
         </div>}
 
         {comments.length > 0 && <ul className='space-y-3'>
-            {comments.map(comment => (<CommentCard onRemove={() => removeCommentHandler(comment.id)} onAddFavourite={() => favouriteCommentHandler(comment.id)} onLike={() => likeCommentHandler(comment.id)} key={comment.id} comment={comment} status={status} />))}
+            {comments.map(comment => (<CommentCard onRemove={() => onRemoveComment(comment.id)} onAddFavourite={() => onAddFavorite(comment.id)} onLike={() => onLikeComment(comment.id)} key={comment.id} comment={comment} status={status} />))}
         </ul>}
-        <AddComment onAddComment={addCommentHandler} />
+        <AddComment onAddComment={onAddComment} />
     </div>
 }
 

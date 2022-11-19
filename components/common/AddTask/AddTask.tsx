@@ -1,12 +1,12 @@
 import React from 'react';
 import cn from 'classnames';
-import { Project } from '../../../store/TaskContext';
+import { ProjectSchema } from '../../../models/Project';
 import {icons} from '../../../utils';
-import useTaskStatus from '../../../hooks/useTaskStatus';
 import {PlusCircleIcon} from '@heroicons/react/20/solid';
 import {useRouter} from 'next/router';
+import useTasks from '../../../hooks/useTasks';
 
-export type TaskStatus = 'progress' | 'completed' | 'created'
+export type TaskStatus = 'progress' | 'completed' | 'created';
 
 const status: {[Key in TaskStatus]: number} = {
     created: 0,
@@ -16,7 +16,7 @@ const status: {[Key in TaskStatus]: number} = {
 
 type AddTaskProps = {
     statusType: TaskStatus,
-    project: Project
+    project: ProjectSchema
 }
 
 const title: {[key in TaskStatus]: string} = {
@@ -26,13 +26,11 @@ const title: {[key in TaskStatus]: string} = {
 }
 
 const AddTask = ({statusType, project}: AddTaskProps) => {
-    const getStatus = useTaskStatus();
+    const {tasks, error, mutate, ...data} = useTasks(project.id.toString());
     const router = useRouter();
-    const task = getStatus(project.id)[statusType];
-    const word = task > 1 ? 'tasks' : 'task';
     const Icon = icons[statusType];
 
-    const handleClick = (projectId: string) => {
+    const handleClick = (projectId: number) => {
         router.push({
             pathname: '/dashboard/projects/[id]/add-task',
             query: {
@@ -49,7 +47,7 @@ const AddTask = ({statusType, project}: AddTaskProps) => {
             </div>
             <div className='flex-1'>
                 <h3 className='uppercase text-black font-semibold text-lg md:text-xl'>{title[statusType]}</h3>
-                <p className='text-sm font-light text-gray-600'>{task}{` `}{word} remaining</p>
+                {tasks && <p className='text-sm font-light text-gray-600'>{data[statusType]!.length}{` `}{ data[statusType]!.length > 1 ? 'tasks' : 'task'} remaining</p>}
             </div>
         </div>
         <button onClick={() => handleClick(project.id)} className='inline-flex p-2 w-full bg-black text-white space-x-1 items-center justify-center'><PlusCircleIcon className='w-4 h-4' /> <span>Add Task</span></button>

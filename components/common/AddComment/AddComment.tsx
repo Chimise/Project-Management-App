@@ -2,8 +2,7 @@ import React, {useState} from 'react';
 import cn from 'classnames';
 import TextBox from '../../ui/TextBox';
 import Button from '../../ui/Button';
-import { Comment } from '../../../store/TaskContext/TaskContext';
-import {generateId} from '../../../utils'
+import { Comment } from '../CommentCard';
 
 interface AddCommentProps {
     onAddComment: (comment: Comment) => void;
@@ -21,9 +20,10 @@ const AddComment = ({onAddComment}: AddCommentProps) => {
         if(comment.trim().length === 0) {
             return;
         }
-        const id = generateId();
-        const createdAt = new Date().toISOString();
-        onAddComment({message: comment, id, favourite: false, like: false, createdAt});
+        const created_at = new Date().toISOString();
+        const id = new Date(created_at).getTime();
+        const updated_at = created_at;
+        onAddComment({message: comment, favorite: false, like: false, created_at, id, updated_at});
         setIsVisible(false);
         setComment('');
     }

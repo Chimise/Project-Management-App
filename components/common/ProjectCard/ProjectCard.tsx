@@ -5,18 +5,17 @@ import Badge from "../../ui/Badge";
 import { icons } from "../../../utils";
 import IconBox from "../IconBox";
 import PrimaryCard from "../../ui/PrimaryCard";
-import { Project } from "../../../store/TaskContext";
+import { ProjectSchema } from "../../../models/Project";
 import { useRouter } from "next/router";
-import useTaskStatus from '../../../hooks/useTaskStatus';
+import useTasks from '../../../hooks/useTasks';
 
 interface ProjectCardProps {
-  project: Project;
+  project: ProjectSchema;
   className?: string;
 }
 
 const ProjectCard = ({ project, className }: ProjectCardProps) => {
-  const getStatus = useTaskStatus();
-  const {created, progress, completed} = getStatus(project.id);
+  const {created, progress, completed, tasks} = useTasks(project.id.toString());
 
   const [isHovering, setIsHovering] = useState(false);
   const router = useRouter();
@@ -55,23 +54,25 @@ const ProjectCard = ({ project, className }: ProjectCardProps) => {
         >
           <p className="text-teal-600 font-extralight">Click to open!</p>
         </Transition>
-        <div className="flex space-x-3">
+        <div className="flex-1" />
+        
+        {tasks && <div className="flex space-x-3 py-2">
           <IconBox
             status={0}
-            value={created}
+            value={created!.length}
             className="group-hover:text-primary"
           />
           <IconBox
             status={1}
-            value={progress}
+            value={progress!.length}
             className="group-hover:text-primary"
           />
           <IconBox
             status={2}
-            value={completed}
+            value={completed!.length}
             className="group-hover:text-primary"
           />
-        </div>
+        </div>}
       </div>
     </PrimaryCard>
   );

@@ -1,9 +1,11 @@
 import React from "react";
 import cn from "classnames";
 import moment from "moment";
+import {CommentSchema} from '../../../models/Comment';
 import { Status } from "../../../utils";
-import { Comment } from "../../../store/TaskContext/TaskContext";
 import { ChatBubbleLeftIcon, StarIcon, TrashIcon, HeartIcon } from "@heroicons/react/24/solid";
+
+export type Comment = Omit<CommentSchema, 'user_id'|'task_id'>;
 
 interface CommentCardProps {
   status: Status;
@@ -14,7 +16,7 @@ interface CommentCardProps {
 }
 
 const CommentCard = ({ status, comment, onAddFavourite, onLike, onRemove }: CommentCardProps) => {
-    const {message, like, favourite, createdAt} = comment;
+    const {message, like, favorite, created_at} = comment;
   return (
     <li
       className={cn("flex transition-all hover:-translate-x-1 duration-300 divide-x-4 py-2", {
@@ -40,14 +42,14 @@ const CommentCard = ({ status, comment, onAddFavourite, onLike, onRemove }: Comm
         <div className="flex-1">
           <h4 className="font-semibold text-lg text-gray-900">Botty Bot</h4>
           <div className="block font-light text-sm text-gray-700 mt-0.5">
-            {moment(createdAt).format("dddd D MMMM, YYYY")} |{" "}
-            <time>{moment(createdAt).format("H:ss")}</time>
+            {moment(created_at).format("dddd D MMMM, YYYY")} |{" "}
+            <time>{moment(created_at).format("H:ss")}</time>
           </div>
           <p className="text-gray-700 text-base mt-1">{message}</p>
         </div>
         <div className={cn("shrink-0 flex items-center space-x-2")}>
           <StarIcon onClick={onLike} className={cn("w-5 h-5 cursor-pointer transition-transform duration-200 hover:scale-125 lg:w-7 lg:h-7", {'text-primary': status === 0, 'text-progress': status === 1, 'text-completed': status === 2}, {'opacity-100': like, 'opacity-50': !like})} />
-          <HeartIcon onClick={onAddFavourite} className={cn("w-5 h-5 cursor-pointer transition-transform duration-200 hover:scale-125 lg:w-7 lg:h-7", {'text-primary': status === 0 , 'text-progress': status === 1, 'text-completed': status === 2}, {'opacity-100': favourite, 'opacity-50': !favourite})} />
+          <HeartIcon onClick={onAddFavourite} className={cn("w-5 h-5 cursor-pointer transition-transform duration-200 hover:scale-125 lg:w-7 lg:h-7", {'text-primary': status === 0 , 'text-progress': status === 1, 'text-completed': status === 2}, {'opacity-100': favorite, 'opacity-50': !favorite})} />
           <TrashIcon onClick={onRemove} className={cn("w-5 h-5 cursor-pointer transition-transform duration-200 hover:scale-125 lg:w-7 opacity-50 lg:h-7", {'text-primary': status === 0, 'text-progress': status === 1, 'text-completed': status === 2 }, )} />
         </div>
       </div>
