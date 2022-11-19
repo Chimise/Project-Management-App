@@ -3,7 +3,7 @@ import { getKnex } from "../utils/connectDb";
 import type { BaseSchema } from "../utils";
 import Project, { ProjectSchema } from "./Project";
 
-interface UserSchema extends BaseSchema {
+export interface UserSchema extends BaseSchema {
   name: string;
   email: string;
   password: string;
@@ -68,7 +68,8 @@ class User {
         knex.ref("user_id").withSchema("projects")
       )
       .join<ProjectSchema>("projects", "users.id", "projects.user_id")
-      .where("user_id", this.id);
+      .where("projects.user_id", this.id)
+      .orderBy('projects.created_at', 'desc');
 
     if (projects.length === 0) {
       return [];
@@ -136,7 +137,7 @@ class User {
     return new User(users[0]);
   }
 
-  toString() {
+  toJSON() {
     const data = {
       id: this.id,
       name: this.name,
@@ -147,6 +148,7 @@ class User {
     };
     return data;
   }
+
 }
 
 export default User;

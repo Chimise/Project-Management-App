@@ -1,6 +1,7 @@
 import { getKnex } from "../utils/connectDb";
 import { BaseSchema } from "../utils";
 import Task, { TaskSchema } from "./Task";
+import { deleteOne } from "../controllers/project";
 
 export interface ProjectSchema extends BaseSchema {
   name: string;
@@ -30,8 +31,6 @@ class Project {
       .where("id", this.id);
   }
 
-  
-
   static async findById(id: number) {
     const knex = getKnex();
     const projects = await knex<ProjectSchema>("projects")
@@ -49,7 +48,8 @@ class Project {
     const tasks: TaskSchema[] = await knex<ProjectSchema>("projects")
       .select("tasks.*")
       .join<TaskSchema>("tasks", "projects.id", "tasks.project_id")
-      .where("tasks.project_id", this.id);
+      .where("tasks.project_id", this.id)
+      .orderBy('tasks.created_at', 'desc');
     if (tasks.length === 0) {
       return [];
     }
@@ -61,10 +61,11 @@ class Project {
       })
     );
     return this.tasks;
-
   }
 
-  static async findOne(values: Partial<Omit<ProjectSchema, keyof ProjectSchema>>) {
+  static async findOne(
+    values: Partial<Omit<ProjectSchema, "created_at" | "updated_at">>
+  ) {
     const knex = getKnex();
     const projects = await knex<ProjectSchema>("projects")
       .select("*")
@@ -78,11 +79,13 @@ class Project {
 
   static async find(values: Partial<Omit<ProjectSchema, keyof BaseSchema>>) {
     const knex = getKnex();
-    const projects = await knex<ProjectSchema>('projects').select('*').where(values);
-    if(projects.length === 0) {
-        return []
+    const projects = await knex<ProjectSchema>("projects")
+      .select("*")
+      .where(values);
+    if (projects.length === 0) {
+      return [];
     }
-    return projects.map(proj => new Project(proj));
+    return projects.map((proj) => new Project(proj));
   }
 
   static async insertOne(values: Pick<ProjectSchema, "name" | "user_id">) {
@@ -104,7 +107,20 @@ class Project {
     return new Project(projects[0]);
   }
 
-  toString() {
+  static async deleteOne(
+    values: Partial<Omit<ProjectSchema, "created_at" | "updated_at">>
+  ) {
+    const knex = getKnex();
+    const project = (
+      await knex<ProjectSchema>("projects").where(values).del("*").limit(1)
+    )[0];
+    if (!project) {
+      return null;
+    }
+    return new Project(project);
+  }
+
+  toJSON() {
     const { id, name, user_id, created_at, updated_at, tasks } = this;
     return {
       id,
@@ -112,9 +128,11 @@ class Project {
       user_id,
       created_at,
       updated_at,
-      tasks,
+      tasks
     };
-  }
+
+  } 
+
 }
 
 export default Project;

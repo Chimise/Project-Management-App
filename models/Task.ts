@@ -1,13 +1,14 @@
 import { getKnex } from "../utils/connectDb";
-import { BaseSchema, Status } from "../utils";
+import { BaseSchema } from "../utils";
 import Comment, { CommentSchema } from "./Comment";
 
 export interface TaskSchema extends BaseSchema {
   name: string;
   tag: string;
   description: string;
-  status: Status;
+  status: number;
   project_id: number;
+  user_id: number;
 }
 
 class Task {
@@ -15,10 +16,11 @@ class Task {
   name: string;
   tag: string;
   description: string;
-  status: Status;
+  status: number;
   created_at: string;
   updated_at: string;
   project_id: number;
+  user_id: number;
   comments: Comment[];
 
   constructor({
@@ -30,6 +32,7 @@ class Task {
     created_at,
     updated_at,
     project_id,
+    user_id,
   }: TaskSchema) {
     this.id = id;
     this.name = name;
@@ -40,6 +43,7 @@ class Task {
     this.updated_at = updated_at;
     this.project_id = project_id;
     this.comments = [];
+    this.user_id = user_id;
   }
 
   async save() {
@@ -58,15 +62,37 @@ class Task {
   async getComments() {
     const knex = getKnex();
     const comments: CommentSchema[] = await knex<TaskSchema>("tasks")
-      .select('comments.*')
+      .select("comments.*")
       .join<CommentSchema>("comments", "tasks.id", "comments.task_id")
-      .where('comments.task_id', this.id);
-    if(comments.length === 0) {
-        return [];
+      .where("comments.task_id", this.id)
+      .orderBy('comments.created_at','desc');
+    if (comments.length === 0) {
+      return [];
     }
-    
-    this.comments = comments.map(comment => new Comment(comment));
+
+    this.comments = comments.map((comment) => new Comment(comment));
     return this.comments;
+  }
+  async getComment(commentId: number) {
+    const knex = getKnex();
+    const comment: CommentSchema = (
+      await knex<TaskSchema>("tasks")
+        .select("comments.*")
+        .join<CommentSchema>("comments", "tasks.id", "comments.task_id")
+        .where("comments.id", commentId)
+        .andWhere("comments.task_id", this.id)
+    )[0];
+    if (!comment) {
+      return null;
+    }
+    return new Comment(comment);
+  }
+
+  async insertComments(values: Omit<CommentSchema, 'id'|'updated_at'|'task_id'|'user_id'>[]) {
+    const updatedValues = values.map(val => ({...val, task_id: this.id, user_id: this.user_id}));
+    const knex = getKnex();
+    await knex('comments').insert(updatedValues);
+    this.comments = await this.getComments();
   }
 
   static async findById(id: number) {
@@ -77,20 +103,39 @@ class Task {
     if (!task) {
       return null;
     }
-    return new Task(task);
+
+    const updatedTask =  new Task(task);
+    await updatedTask.getComments();
+    return updatedTask;
   }
 
   static async findOne(
-    values: Partial<
-      Omit<TaskSchema, "created_at" | "updated_at" | "project_id">
-    >
+    values: Partial<Omit<TaskSchema, "created_at" | "updated_at">>
   ) {
     const knex = getKnex();
-    const task = (await knex<TaskSchema>("tasks").select("*").where(values))[0];
+    const task = (
+      await knex<TaskSchema>("tasks").select("*").where(values).limit(1)
+    )[0];
     if (!task) {
       return null;
     }
-    return new Task(task);
+    const populatedTask =  new Task(task);
+    await populatedTask.getComments();
+    return populatedTask;
+  }
+
+  static async find(values: Partial<Omit<TaskSchema, keyof BaseSchema>>) {
+    const knex = getKnex();
+    const tasks = await knex<TaskSchema>("tasks").select("*").where(values);
+    if (tasks.length === 0) {
+      return [];
+    }
+    const populatedTask =  await Promise.all(tasks.map(async (task) => {
+      const newTask = new Task(task);
+      await newTask.getComments();
+      return newTask;
+    }));
+    return populatedTask;
   }
 
   static async insertOne(data: Omit<TaskSchema, keyof BaseSchema>) {
@@ -99,18 +144,22 @@ class Task {
     return new Task(task);
   }
 
-  static async deleteById(id: number) {
+  static async deleteOne(
+    values: Partial<Omit<TaskSchema, "created_at" | "updated_at">>
+  ) {
     const knex = getKnex();
-    const task = (await knex<TaskSchema>("tasks").where("id", id).del("*"))[0];
+    const task = (
+      await knex<TaskSchema>("tasks").where(values).del("*").limit(1)
+    )[0];
     if (!task) {
       return null;
     }
-
+    
     return new Task(task);
   }
 
-  toString() {
-    const { id, name, tag, description, project_id, created_at, updated_at } =
+  toJSON() {
+    const { id, name, tag, status, description, project_id, comments, created_at, updated_at } =
       this;
     return {
       id,
@@ -120,8 +169,11 @@ class Task {
       project_id,
       created_at,
       updated_at,
+      comments,
+      status: typeof status == 'string' ? parseInt(status) : status
     };
   }
+  
 }
 
 export default Task;

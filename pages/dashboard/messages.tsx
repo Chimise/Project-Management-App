@@ -52,4 +52,6 @@ const MessagesPage = () => {
   );
 };
 
+MessagesPage.isAuth = true;
+
 export default MessagesPage;

@@ -6,13 +6,8 @@ export interface CommentSchema extends BaseSchema {
   favorite: boolean;
   like: boolean;
   task_id: number;
+  user_id: number;
 }
-
-type CommentField = Omit<CommentSchema, keyof BaseSchema>;
-
-type CommentUpdate = {
-  [Key in keyof CommentField]+?: boolean;
-};
 
 class Comment {
   id: number;
@@ -22,6 +17,7 @@ class Comment {
   created_at: string;
   updated_at: string;
   task_id: number;
+  user_id: number;
   constructor({
     id,
     message,
@@ -30,6 +26,7 @@ class Comment {
     created_at,
     updated_at,
     task_id,
+    user_id,
   }: CommentSchema) {
     this.id = id;
     this.message = message;
@@ -38,35 +35,19 @@ class Comment {
     this.created_at = created_at;
     this.updated_at = updated_at;
     this.task_id = task_id;
+    this.user_id = user_id;
   }
 
-  async save(updateFields?: CommentUpdate) {
+  async save() {
     const knex = getKnex();
-    const update = {} as CommentField;
     const updated_at = knex.fn.now();
 
-    if (!updateFields) {
-      await knex<CommentSchema>("comments").update({
-        message: this.message,
-        favorite: this.favorite,
-        like: this.like,
-        updated_at
-      });
-      return;
-    }
-
-    Object.keys(updateFields).forEach((key) => {
-      const value = updateFields[key as keyof CommentUpdate];
-      if (value) {
-        //@ts-ignore
-        update[key as keyof CommentField] =
-          this[key as keyof CommentUpdate];
-      }
+    await knex<CommentSchema>("comments").update({
+      message: this.message,
+      favorite: this.favorite,
+      like: this.like,
+      updated_at,
     });
-    await knex<CommentSchema>("comments")
-      .update({...update, updated_at})
-      .where("id", this.id)
-      .returning("*");
   }
 
   static async findById(id: number) {
@@ -80,7 +61,7 @@ class Comment {
     return new Comment(comment);
   }
 
-  static async findOne(values: Partial<Omit<CommentSchema, keyof BaseSchema>>) {
+  static async findOne(values: Partial<Omit<CommentSchema, 'created_at'|'updated_at'>>) {
     const knex = getKnex();
     const comment = (
       await knex<CommentSchema>("comments").select("*").where(values).limit(1)
@@ -99,26 +80,31 @@ class Comment {
     return new Comment(comment);
   }
 
-  static async deleteById(id: number) {
+  static async deleteOne(values: Partial<Omit<CommentSchema, 'created_at'|'updated_at'>>) {
     const knex = getKnex();
     const comment = (
-      await knex<CommentSchema>("comments").where("id", id).del("*")
+      await knex<CommentSchema>("comments").where(values).del("*").limit(1)
     )[0];
+    if(!comment) {
+      return null;
+    }
     return new Comment(comment);
   }
 
-  toString() {
-    const {id, message, like, favorite, task_id, created_at, updated_at} = this;
+  toJSON() {
+    const { id, message, like, favorite, task_id, created_at, updated_at } =
+      this;
     return {
-        id,
-        message,
-        like,
-        favorite,
-        task_id,
-        created_at,
-        updated_at
-    }
+      id,
+      message,
+      like,
+      favorite,
+      task_id,
+      created_at,
+      updated_at,
+    };
   }
+
 }
 
 export default Comment;

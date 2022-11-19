@@ -51,4 +51,6 @@ const ReportPage = () => {
   );
 };
 
+ReportPage.isAuth = true;
+
 export default ReportPage;

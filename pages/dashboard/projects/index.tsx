@@ -5,25 +5,23 @@ import DashboardHeader from '../../../components/common/DashboardHeader';
 import Input from '../../../components/ui/Input';
 import Button from '../../../components/ui/Button';
 import useProjects from '../../../hooks/useProjects';
-import { useRouter } from 'next/router';
 import ProjectCard from '../../../components/common/ProjectCard';
+import Loading from '../../../components/common/Loading';
+import useAddProject from '../../../hooks/useAddProject';
+import Error from '../../../components/common/Error';
 
 
 const AddProjectPage = () => {
     const inputRef = useRef<HTMLInputElement>(null);
-    const router = useRouter();
-    const {addProject, projects} = useProjects();
-    const addProjectHandler = (event: React.FormEvent<HTMLFormElement>) => {
+    const {projects, isLoading, mutate, error} = useProjects();
+    const {sendRequest} = useAddProject();
+    const addProjectHandler = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const name = inputRef.current?.value;
         if(!name) {
             return;
         };
-        const id = addProject(name);
-        router.push({pathname: '/dashboard/projects/[id]', query: {
-            id
-        }});
-        
+        await sendRequest({name});
     }
     return (<Container>
         <DashboardHeader title="Projects" />
@@ -34,13 +32,17 @@ const AddProjectPage = () => {
             <Button>Create Project</Button>
         </form>
         <div className='mt-16 space-y-4 sm:space-y-0 sm:flex sm:flex-wrap sm:-mx-3'>
-            {projects.map(project => (
+            {isLoading && <Loading className='h-40' />}
+            {projects && projects.map(project => (
                 <div key={project.id} className='w-full sm:p-3 sm:w-1/2 lg:w-1/3'>
                     <ProjectCard className='h-48 w-full sm:w-auto' project={project} />
                 </div>
             ))}
+            {error && <Error className='h-40' onRetry={() => mutate()} />}
         </div>
     </Container>)
 }
+
+AddProjectPage.isAuth = true;
 
 export default AddProjectPage;
