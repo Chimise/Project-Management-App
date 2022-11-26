@@ -1,0 +1,115 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders the homepage unchanged 1`] = `
+<div
+  class="h-screen w-screen flex flex-col"
+>
+  <header>
+    <div
+      class="w-[95%] mx-auto px-5 flex items-center justify-between h-16"
+    >
+      <a
+        href="/"
+      >
+        <div
+          class="flex items-center space-x-2"
+        >
+          <div
+            class="inline-flex items-center justify-center rounded-full p-2 bg-primary"
+          >
+            <svg
+              aria-hidden="true"
+              class="w-5 h-5 text-white"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6.429 9.75L2.25 12l4.179 2.25m0-4.5l5.571 3 5.571-3m-11.142 0L2.25 7.5 12 2.25l9.75 5.25-4.179 2.25m0 0L21.75 12l-4.179 2.25m0 0l4.179 2.25L12 21.75 2.25 16.5l4.179-2.25m11.142 0l-5.571 3-5.571-3"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+        </div>
+      </a>
+      <nav
+        class="flex items-center space-x-4"
+      >
+        <a
+          class="text-gray-700 text-sm px-3 py-1.5"
+          href="/auth/signin"
+        >
+          Sign In
+        </a>
+        <a
+          class="bg-primary text-sm text-white px-3 py-1.5 rounded-sm shadow-sm"
+          href="/auth/signup"
+        >
+          Sign Up
+        </a>
+      </nav>
+    </div>
+  </header>
+  <main
+    class="flex-1 pb-5"
+  >
+    <div
+      class="w-[95%] mx-auto px-5 bg-[url("/background.jpg")] relative h-full bg-center bg-cover bg-no-repeat"
+    >
+      <div
+        class="absolute inset-0 bg-black/80 flex items-center justify-center"
+      >
+        <div
+          class="w-full max-w-2xl flex flex-col items-center space-y-3"
+        >
+          <div
+            class="text-4xl md:text-5xl font-semibold text-center space-y-0.5"
+          >
+            <h2
+              class="text-white"
+            >
+              Manage your projects
+            </h2>
+            <h2
+              class="text-primary/70"
+            >
+              and create tasks
+            </h2>
+          </div>
+          <p
+            class="text-sm tracking-wide text-center text-gray-300 px-3"
+          >
+            With taskr you can manage and breakdown your projects into smaller managable tasks that you can track easily as you progress, you can also create some sort of reminder by adding comment to your task.
+          </p>
+          <a
+            class="inline-flex items-center px-4 py-2 space-x-2 bg-teal-800 text-white"
+            href="/auth/signup"
+          >
+            <span
+              class="text-sm font-semibold"
+            >
+              Get Started
+            </span>
+            <svg
+              aria-hidden="true"
+              class="w-3 h-3 shrink-0"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                clip-rule="evenodd"
+                d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+`;

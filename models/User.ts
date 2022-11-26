@@ -2,12 +2,20 @@ import bcrypt from "bcryptjs";
 import { getKnex } from "../utils/connectDb";
 import type { BaseSchema } from "../utils";
 import Project, { ProjectSchema } from "./Project";
+import UserMessage from './UserMessage';
+import type {Message} from './UserMessage';
+import type { Report } from "./UserReport";
+import UserReport from "./UserReport";
 
 export interface UserSchema extends BaseSchema {
   name: string;
   email: string;
   password: string;
 }
+
+
+
+
 
 // type InsertUser = Pick<User, 'name'|'email'|'password'> & Partial<Pick<User, 'created_at' | 'updated_at'>>
 
@@ -81,6 +89,30 @@ class User {
       return project;
     }))
     return this.projects;
+  }
+
+  async createMessages() {
+    const knex = getKnex();
+    const messageIds = await knex<Message>('messages').select('id');
+    const userMessages = messageIds.map(({id}) => {
+      return {
+        user_id: this.id,
+        message_id: id,
+      }
+    });
+    await UserMessage.insert(userMessages);
+  }
+
+  async createReports() {
+    const knex = getKnex();
+    const reportIds = await knex<Report>('reports').select('id');
+    const userReports = reportIds.map((({id}) => {
+      return {
+        user_id: this.id,
+        report_id: id
+      }
+    }));
+    await UserReport.insert(userReports);
   }
 
   static async hashPassword(password: string) {

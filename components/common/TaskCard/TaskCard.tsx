@@ -3,6 +3,7 @@ import moment from "moment";
 import { ChatBubbleLeftIcon } from "@heroicons/react/20/solid";
 import PrimaryCard from "../../ui/PrimaryCard";
 import {Task} from '../../../hooks/useAddTask';
+import useUser from '../../../hooks/useUser';
 
 
 interface TaskCardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -10,6 +11,7 @@ interface TaskCardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const TaskCard = ({task, ...props}: TaskCardProps) => {
+  const {user} = useUser();
   
   return (
     <PrimaryCard
@@ -20,7 +22,7 @@ const TaskCard = ({task, ...props}: TaskCardProps) => {
       <div className="flex-1">
         <h5 className="font-semibold text-lg">{task.name}</h5>
         <p className="text-sm text-gray-400 mt-1">
-          Botty Bot, {moment(task.created_at).format("D MMM YYYY")}
+          {user ? user.name : ''}, {moment(task.created_at).format("D MMM YYYY")}
         </p>
         <p className="text-sm font-base text-gray-800 mt-2">
           {task.description}

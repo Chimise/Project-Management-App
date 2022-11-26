@@ -1,6 +1,7 @@
 import React, {useEffect} from "react";
 import { useRouter } from "next/router";
 import moment from "moment";
+import Head from 'next/head';
 import useProject from "../../../../hooks/useProject";
 import Container from "../../../../components/ui/Container";
 import DashboardHeader from "../../../../components/common/DashboardHeader";
@@ -29,6 +30,11 @@ const ProjectPage = () => {
 
   return (
     <Container className="h-full flex flex-col space-y-2">
+      {project && (<Head>
+        <title>{project.name}</title>
+        <meta name='author' content='Chisom Promise' />
+        <meta name='description' content={`Delete project or create new tasks for the project ${project.name}`} />
+      </Head>)}
       <DashboardHeader goBack />
       <div className="flex-1">
         {isLoading && (

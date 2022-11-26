@@ -1,14 +1,15 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import useRequest from "./useRequest";
 import { sendRequest } from "../utils";
-import { ProjectSchema } from "../models/Project";
+import { Project } from "./useProject";
 import useProjects from './useProjects';
 import {useRouter} from 'next/router';
 
 type Body = { name: string };
 
+
 const addProject = async (values: Body, token: string) => {
-  const project = await sendRequest<ProjectSchema, Body>({
+  const project = await sendRequest<Project, Body>({
     body: values,
     url: "/api/projects",
     token: token,
@@ -17,18 +18,22 @@ const addProject = async (values: Body, token: string) => {
 };
 
 const useAddProject = (redirect: boolean = true) => {
+  const {current: willRedirect} = useRef(redirect);
   const {mutate} = useProjects();
   const {push} = useRouter();
   const { data: project, error, sendRequest } = useRequest(addProject);
 
   useEffect(() => {
     if(project) {
-      mutate(prevProjects => [project, ...(prevProjects || [])], false);
-      if(redirect) {
+      mutate();
+      if(willRedirect) {
         push(`/dashboard/projects/${project.id}/add-task`);
       }
+      
     }
-  }, [project, mutate, push, redirect]);
+  }, [project, mutate, push, willRedirect]);
+
+  
   return {
     project,
     error,

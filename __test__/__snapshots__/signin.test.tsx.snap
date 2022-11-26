@@ -1,0 +1,185 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`render the SignIn page unchanged 1`] = `
+<div
+  class="md:flex h-screen"
+  style="opacity: 1; transform: none;"
+>
+  <div
+    class="md:flex-1 h-full py-5 md:py-10"
+  >
+    <div
+      class="w-[80%] flex flex-col h-full md:w-[80%] mx-auto"
+    >
+      <div
+        class="shrink-0"
+      >
+        <a
+          href="/"
+        >
+          <div
+            class="flex items-center space-x-2"
+          >
+            <div
+              class="inline-flex items-center justify-center rounded-full p-2 bg-primary"
+            >
+              <svg
+                aria-hidden="true"
+                class="w-5 h-5 text-white"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M6.429 9.75L2.25 12l4.179 2.25m0-4.5l5.571 3 5.571-3m-11.142 0L2.25 7.5 12 2.25l9.75 5.25-4.179 2.25m0 0L21.75 12l-4.179 2.25m0 0l4.179 2.25L12 21.75 2.25 16.5l4.179-2.25m11.142 0l-5.571 3-5.571-3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+            <div
+              class="text-primary font-bold text-2xl font-sans"
+            >
+              taskr
+            </div>
+          </div>
+        </a>
+      </div>
+      <div
+        class="flex-1 flex items-center justify-center"
+      >
+        <div
+          class="w-full max-w-sm"
+        >
+          <h2
+            class="text-3xl text-gray-700 text-center md:text-4xl font-semibold"
+          >
+            Sign In
+          </h2>
+          <form
+            class="space-y-6 my-6"
+            novalidate=""
+          >
+            <label
+              class="block space-y-px group w-full"
+            >
+              <span
+                class="block capitalize group-focus-within:font-medium tracking-wide text-gray-600 font-normal text-xs"
+              >
+                email
+              </span>
+              <input
+                aria-errormessage="email-error"
+                aria-invalid="false"
+                autocapitalize="off"
+                autocomplete="off"
+                autocorrect="off"
+                class="block w-full py-0.5 text-sm border-0 px-0 transition-colors duration-100 placeholder:text-sm placeholder-gray-600 focus:ring-0 border-b-2 border-gray-200 focus:outline-none focus:border-slate-700 placeholder-gray-600"
+                name="email"
+                spellcheck="false"
+                type="email"
+                value=""
+              />
+              <span
+                class="relative w-full block"
+              />
+            </label>
+            <label
+              class="block space-y-px group w-full"
+            >
+              <span
+                class="block capitalize group-focus-within:font-medium tracking-wide text-gray-600 font-normal text-xs"
+              >
+                password
+              </span>
+              <div
+                class="w-full relative"
+              >
+                <input
+                  aria-errormessage="password-error"
+                  aria-invalid="false"
+                  autocapitalize="off"
+                  autocomplete="off"
+                  autocorrect="off"
+                  class="block w-full py-0.5 text-sm border-0 px-0 transition-colors duration-100 placeholder:text-sm placeholder-gray-600 focus:ring-0 border-b-2 border-gray-200 focus:outline-none focus:border-slate-700"
+                  name="password"
+                  spellcheck="false"
+                  type="password"
+                  value=""
+                />
+                <span
+                  class="absolute bg-transparent text-gray-400 flex items-center justify-center inset-y-0 right-0 cursor-pointer w-6"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="w-4 h-4"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M10 12.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z"
+                    />
+                    <path
+                      clip-rule="evenodd"
+                      d="M.664 10.59a1.651 1.651 0 010-1.186A10.004 10.004 0 0110 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0110 17c-4.257 0-7.893-2.66-9.336-6.41zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                      fill-rule="evenodd"
+                    />
+                  </svg>
+                </span>
+              </div>
+              <span
+                class="relative w-full block"
+              />
+            </label>
+            <button
+              class="w-full block text-center py-2 bg-black text-white"
+              type="submit"
+            >
+              Sign In
+            </button>
+          </form>
+          <p
+            class="text-gray-600 md:hidden text-center text-sm font-light"
+          >
+            Don't have an account?
+             
+            <a
+              class="pl-2 inline-block text-black font-medium"
+              href="/auth/signup"
+            >
+              Login in here
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="md:flex-1 py-5 md:py-0 hidden md:flex items-center justify-center md:h-full bg-gradient-to-br from-teal-600 to-teal-800"
+  >
+    <div
+      class="space-y-6 w-full max-w-xs text-center text-white"
+    >
+      <h4
+        class="text-4xl font-semibold"
+      >
+        Hello, Friend!
+      </h4>
+      <p
+        class="font-light text-sm tracking-wide"
+      >
+        Enter your personal details and start a journey with us
+      </p>
+      <a
+        class="inline-block border uppercase border-white rounded-full px-10 py-2"
+        href="/auth/signup"
+      >
+        Sign up
+      </a>
+    </div>
+  </div>
+</div>
+`;

@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import moment from "moment";
 import { useFormik } from "formik";
@@ -16,6 +17,8 @@ import CommentList from "../../../../components/common/CommentList";
 import type { Comment } from "../../../../components/common/CommentCard";
 import useProject from "../../../../hooks/useProject";
 import useAddTask from "../../../../hooks/useAddTask";
+import useUser from "../../../../hooks/useUser";
+import { userAgent } from "next/server";
 
 const AddTaskPage = () => {
   const [status, setStatus] = useState<Status>(0);
@@ -23,32 +26,40 @@ const AddTaskPage = () => {
   const { project, error } = useProject(getQuery(query.id));
   const sendRequest = useAddTask();
   const [comments, setComments] = useState<Comment[]>([]);
-  const { values, handleSubmit, handleBlur, handleChange, touched, errors } =
-    useFormik({
-      initialValues: {
-        name: "",
-        description: "",
-        tag: "",
-      },
-      onSubmit: async (values) => {
-        const projectId = Array.isArray(query.id) ? query.id[0] : query.id;
-        if (projectId) {
-          const taskStatus = status as number;
-          const project_id = parseInt(projectId);
-          await sendRequest({
-            ...values,
-            status: taskStatus,
-            project_id,
-            comments,
-          });
-        }
-      },
-      validationSchema: Yup.object({
-        name: Yup.string().required(),
-        description: Yup.string().required(),
-        tag: Yup.string().required(),
-      }),
-    });
+  const { firstName, user } = useUser();
+  const {
+    values,
+    handleSubmit,
+    handleBlur,
+    handleChange,
+    touched,
+    errors,
+    isSubmitting,
+  } = useFormik({
+    initialValues: {
+      name: "",
+      description: "",
+      tag: "",
+    },
+    onSubmit: async (values) => {
+      const projectId = Array.isArray(query.id) ? query.id[0] : query.id;
+      if (projectId) {
+        const taskStatus = status as number;
+        const project_id = parseInt(projectId);
+        await sendRequest({
+          ...values,
+          status: taskStatus,
+          project_id,
+          comments,
+        });
+      }
+    },
+    validationSchema: Yup.object({
+      name: Yup.string().required(),
+      description: Yup.string().required(),
+      tag: Yup.string().required(),
+    }),
+  });
   useEffect(() => {
     if (isReady && query.status) {
       const status = Array.isArray(query.status)
@@ -113,6 +124,14 @@ const AddTaskPage = () => {
   return (
     <Container className="h-full flex flex-col">
       <DashboardHeader goBack />
+      <Head>
+        <title>{`Add task for project - ${project.name}`}</title>
+        <meta name="author" content={user ? user.name : "Chisom Promise"} />
+        <meta
+          name="description"
+          content={`Create new task for the project - ${project.name}`}
+        />
+      </Head>
       <div className="flex-1 mt-10 mb-6">
         <div className="flex items-center space-x-1">
           <SquaresPlusIcon
@@ -140,7 +159,10 @@ const AddTaskPage = () => {
             />
           </div>
           <p className="text-sm md:text-base text-gray-600 mt-2">
-            Created by <span className="text-gray-800 font-medium">Daniel</span>{" "}
+            Created by{" "}
+            <span className="text-gray-800 font-medium">
+              {firstName ? firstName : ""}
+            </span>{" "}
             on {moment(project.created_at).format("dddd D MMMM, YYYY")} at{" "}
             {moment(project.created_at).format("HH:ss")}
           </p>
@@ -185,6 +207,7 @@ const AddTaskPage = () => {
               Comments ({comments.length})
             </p>
             <CommentList
+              name={user ? user.name : ""}
               comments={comments}
               onAddComment={addCommentHandler}
               onRemoveComment={removeCommentHandler}
@@ -196,6 +219,7 @@ const AddTaskPage = () => {
           <div className="flex justify-end mt-5">
             <button
               type="submit"
+              disabled={isSubmitting}
               className="px-3 py-2 rounded-lg text-gray-800 transition-all duration-300 font-medium shadow-sm uppercase bg-gray-300 focus:outline-none hover:shadow-md hover:bg-gray-400/60"
             >
               Create Task

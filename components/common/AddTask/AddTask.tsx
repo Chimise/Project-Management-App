@@ -47,7 +47,7 @@ const AddTask = ({statusType, project}: AddTaskProps) => {
             </div>
             <div className='flex-1'>
                 <h3 className='uppercase text-black font-semibold text-lg md:text-xl'>{title[statusType]}</h3>
-                {tasks && <p className='text-sm font-light text-gray-600'>{data[statusType]!.length}{` `}{ data[statusType]!.length > 1 ? 'tasks' : 'task'} remaining</p>}
+                {tasks && <p data-testid='task-remaining' className='text-sm font-light text-gray-600'>{data[statusType]!.length}{` `}{ data[statusType]!.length > 1 ? 'tasks' : 'task'} remaining</p>}
             </div>
         </div>
         <button onClick={() => handleClick(project.id)} className='inline-flex p-2 w-full bg-black text-white space-x-1 items-center justify-center'><PlusCircleIcon className='w-4 h-4' /> <span>Add Task</span></button>

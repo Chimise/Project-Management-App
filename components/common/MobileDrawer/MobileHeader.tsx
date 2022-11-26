@@ -1,27 +1,40 @@
-import React from "react";
+import React, {useState} from "react";
 import MobileLogo from "./MobileLogo";
 import { Bars3BottomRightIcon } from "@heroicons/react/24/outline";
 import MobileDrawer from "./MobileDrawer";
+import { Router, useRouter } from "next/router";
 
-interface MobileHeaderProps {
-  onOpen: () => void;
-  onClose: () => void;
-  isVisible: boolean;
-}
 
-const MobileHeader = ({ onOpen, onClose, isVisible }: MobileHeaderProps) => {
+
+const MobileHeader = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const openMenuHandler = () => {
+    setIsVisible(true);
+  };
+
+  const closeMenuHandler = () => {
+    setIsVisible(false);
+  };
+
+  const { push } = useRouter();
   return (
     <>
       <header className="md:hidden flex bg-white py-4 px-8 justify-between items-center h-[72px]">
-        <MobileLogo />
+        <span data-testid='logo' onClick={() => push("/")}>
+          <MobileLogo />
+        </span>
         <div>
           <Bars3BottomRightIcon
-            onClick={onOpen}
+            id='open-button'
+            aria-hidden='false'
+            onClick={openMenuHandler}
             className="w-6 h-6 text-black"
+            role="button"
+            aria-label="open-button"
           />
         </div>
       </header>
-      <MobileDrawer visible={isVisible} onClose={onClose} />
+      <MobileDrawer visible={isVisible} onClose={closeMenuHandler} />
     </>
   );
 };

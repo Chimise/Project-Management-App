@@ -51,7 +51,7 @@ const Toast = ({
     >
       <div
         className={cn(
-          "fixed left-[50%] -translate-x-1/2 top-[5vh] w-[86vw] sm:w-[70vw] z-50 md:w-[60vw] lg:w-[50vw] flex p-4 text-gray-700 bg-white border-l-[3px] items-center justify-between shadow-md",
+          "fixed left-[50%] -translate-x-1/2 top-[5vh] w-[86vw] sm:w-[70vw] md:max-w-lg flex p-4 text-gray-700 bg-white border-l-[3px] items-center justify-between shadow-md",
           {
             "border-green-800": status === "success",
             "border-red-700": status === "error",
@@ -60,6 +60,10 @@ const Toast = ({
           },
           className
         )}
+        role='alert'
+        aria-live="polite"
+        aria-describedby="message"
+        aria-label='toast'
       >
         <div className="flex-1 flex space-x-3">
           <Icon
@@ -70,7 +74,7 @@ const Toast = ({
               "text-sky-800": status === "info",
             })}
           />
-          <p className="truncate">{message}</p>
+          <p id='message' className="truncate">{message}</p>
         </div>
         <div className="shrink-0 cursor-pointer" onClick={onClose}>
           <XMarkIcon className="w-6 h-6" />

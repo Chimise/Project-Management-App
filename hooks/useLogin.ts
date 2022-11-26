@@ -3,7 +3,9 @@ import useRequest from "./useRequest";
 import { sendRequest } from "../utils";
 import UserModel, { UserSchema } from "../models/User";
 import useAuth from "./useAuth";
-import useUI from './useUI';
+import useUI from "./useUI";
+import useUser from './useUser';
+
 
 type Body = Pick<UserSchema, "email" | "password">;
 export type User = Pick<
@@ -28,17 +30,20 @@ const loginUser = async (input: Body) => {
 const useLogin = () => {
   const { data, error, sendRequest } = useRequest(loginUser);
   const { loginHandler, token } = useAuth();
-  const {openToastHandler} = useUI();
+  const { openToastHandler } = useUI();
+  const {mutate} = useUser();
   useEffect(() => {
     if (data) {
-      console.log(data);
       loginHandler(data.jwt);
+      mutate(data.user, false);
     }
-    if (error) {
-      openToastHandler('error', error.message);
-    }
-  }, [loginHandler, data, error, openToastHandler]);
+  }, [loginHandler, data, mutate]);
 
+  useEffect(() => {
+    if (error) {
+      openToastHandler("error", error.message);
+    }
+  }, [error, openToastHandler]);
 
   return sendRequest;
 };

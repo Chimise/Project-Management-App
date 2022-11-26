@@ -9,12 +9,16 @@ import Logo from "../Logo";
 import NavLink from "../NavLink";
 import MobileHeader from "../MobileDrawer/MobileHeader";
 import DashboardFooter from "../DashboardFooter";
-import { Icons } from "../../../utils";
+import { Icons} from "../../../utils";
 import AddProjectLink from "../AddProjectLink";
-import useInfo from "../../../hooks/useInfo";
-import useAuth from '../../../hooks/useAuth';
-import useUI from '../../../hooks/useUI';
-import Toast from '../../ui/Toast';
+import useMessages from "../../../hooks/useMessages";
+import useReports from "../../../hooks/useReports";
+import useAuth from "../../../hooks/useAuth";
+import useUI from "../../../hooks/useUI";
+import Toast from "../../ui/Toast";
+import useProjects from '../../../hooks/useProjects';
+import useAddProject from '../../../hooks/useAddProject';
+
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -33,27 +37,23 @@ export const mainLinks: Link[] = [
   { icon: "message", href: "messages", title: "Messages" },
 ];
 export const minorLinks: Link[] = [
-  { icon: "setting", href: "setting", title: "Setting" },
+  { icon: "setting", href: "settings", title: "Setting" },
 ];
 
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
-  const { unreadMessages, unreadReports } = useInfo();
-  const {logoutHandler} = useAuth();
-  const {status, toastIsVisible, message, closeToastHandler} = useUI();
-
-  const openMenuHandler = () => {
-    setIsVisible(true);
-  };
-
-  const closeMenuHandler = () => {
-    setIsVisible(false);
-  };
+  const { unRead: unreadMessages } = useMessages();
+  const { unRead: unreadReports } = useReports();
+  const { logoutHandler } = useAuth();
+  const { status, toastIsVisible, message, closeToastHandler } = useUI();
+  const { projects } = useProjects();
+  const {sendRequest: addProject} = useAddProject(false);
+  
 
   const toggleCollapseHandler = () => {
     setIsCollapsed((prev) => !prev);
   };
+
 
   return (
     <div className="md:flex">
@@ -73,11 +73,11 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
             <div className="flex flex-col space-y-3 my-3">
               <div className="h-28">
                 <div className="flex justify-end px-3">
-                  <span onClick={toggleCollapseHandler}>
+                  <span role='button' aria-label='collapse-button' onClick={toggleCollapseHandler}>
                     {isCollapsed ? (
-                      <ChevronDoubleRightIcon className="h-5 w-5 text-slate-500" />
+                      <ChevronDoubleRightIcon data-testid='expand' className="h-5 w-5 text-slate-500" />
                     ) : (
-                      <ChevronDoubleLeftIcon className="h-5 w-5 text-slate-500" />
+                      <ChevronDoubleLeftIcon data-testid='collapse' className="h-5 w-5 text-slate-500" />
                     )}
                   </span>
                 </div>
@@ -97,6 +97,8 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                   </NavLink>
                   <AddProjectLink
                     collapsed={isCollapsed}
+                    projects={projects}
+                    onAddProject={addProject}
                     href={"/dashboard/projects"}
                     icon="project"
                   >
@@ -121,7 +123,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                     Messages
                   </NavLink>
                 </div>
-                <div className="flex-1 flex flex-col justify-center">
+                <div className="flex-1 flex flex-col pb-5 justify-center">
                   {minorLinks.map(({ href, title, icon }) => (
                     <NavLink
                       className="capitalize"
@@ -133,7 +135,14 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                       {title}
                     </NavLink>
                   ))}
-                  <NavLink onClick={logoutHandler} className="capitalize" collapsed={false} icon={'logout'}>Logout</NavLink>
+                  <NavLink
+                    onClick={logoutHandler}
+                    className="capitalize"
+                    collapsed={false}
+                    icon={"logout"}
+                  >
+                    Logout
+                  </NavLink>
                 </div>
               </div>
             </div>
@@ -143,12 +152,13 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
           layout
           className="md:flex-1 flex flex-col h-screen overflow-hidden"
         >
-          <MobileHeader
-            onOpen={openMenuHandler}
-            onClose={closeMenuHandler}
-            isVisible={isVisible}
+          <MobileHeader />
+          <Toast
+            isVisible={toastIsVisible}
+            status={status}
+            message={message}
+            onClose={closeToastHandler}
           />
-          <Toast isVisible={toastIsVisible} status={status} message={message} onClose={closeToastHandler} />
           <div className="bg-white flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
             <main className="flex-1">{children}</main>
             <DashboardFooter />

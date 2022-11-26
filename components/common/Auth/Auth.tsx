@@ -19,7 +19,7 @@ const Auth = ({children}: AuthProps) => {
     }, [token, isLoading, replace])
 
     if(!token) {
-        return <div className='w-full h-screen flex items-center justify-center'>
+        return <div data-testid='spinner' className='w-full h-screen flex items-center justify-center'>
             <Spinner size='lg' />
         </div>
     }

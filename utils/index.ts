@@ -89,7 +89,6 @@ export async function sendRequest<Data, Body>({
 
   const data = await response.json()
   if (!response.ok) {
-    console.log(Boom.isBoom(data))
     const error = data.isBoom ? new RequestError(data.output.payload.message, data.output.statusCode) : new RequestError('An error occurred, please try again later', response.status)
     throw error;
   }

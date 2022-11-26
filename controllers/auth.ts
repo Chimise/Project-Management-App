@@ -15,6 +15,8 @@ export const signUp: RequestHandler<NextApiRequest, NextApiResponse> = async (re
         }
 
         const newUser = await User.insertOne({name: body.name, email: body.email, password: body.password});
+        await newUser.createMessages();
+        await newUser.createReports();
         const token = jwt.sign({id: newUser.id}, process.env.JWT_SECRET!, {expiresIn: '24h'});
         res.status(201).json({user: newUser, jwt: token});
     } catch (error) {

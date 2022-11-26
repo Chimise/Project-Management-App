@@ -10,10 +10,11 @@ interface CommentListProps {
     onLikeComment: (id: number) => void;
     onAddFavorite: (id: number) => void;
     onRemoveComment: (id: number) => void;
-    status: Status
+    status: Status,
+    name: string;
 }
 
-const CommentList = ({comments, onAddComment, onLikeComment, onRemoveComment, onAddFavorite, status}: CommentListProps) => {
+const CommentList = ({comments, onAddComment, onLikeComment, onRemoveComment, name, onAddFavorite, status}: CommentListProps) => {
     return <div className='space-y-4'>
         {comments.length === 0 && <div className='flex flex-col text-gray-700 items-center justify-evenly space-y-4'>
             <EnvelopeOpenIcon className='w-10 h-10' />
@@ -21,7 +22,7 @@ const CommentList = ({comments, onAddComment, onLikeComment, onRemoveComment, on
         </div>}
 
         {comments.length > 0 && <ul className='space-y-3'>
-            {comments.map(comment => (<CommentCard onRemove={() => onRemoveComment(comment.id)} onAddFavourite={() => onAddFavorite(comment.id)} onLike={() => onLikeComment(comment.id)} key={comment.id} comment={comment} status={status} />))}
+            {comments.map(comment => (<CommentCard name={name} onRemove={() => onRemoveComment(comment.id)} onAddFavourite={() => onAddFavorite(comment.id)} onLike={() => onLikeComment(comment.id)} key={comment.id} comment={comment} status={status} />))}
         </ul>}
         <AddComment onAddComment={onAddComment} />
     </div>

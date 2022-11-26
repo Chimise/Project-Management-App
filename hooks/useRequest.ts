@@ -12,17 +12,18 @@ function useRequest<Data = any, Body = any>(fetcher: {
 
   const sendRequest = useCallback(
     async (values: Body) => {
+      setData(null);
+      setError(null);
       try {
         const data = await fetcher(values, jwt);
         setData(data);
-        setError(null);
       } catch (error) {
         const requestError =
           error instanceof RequestError
             ? error
             : new RequestError("An error occured, please try again");
         setError(requestError);
-        setData(null);
+        
       }
     },
     [fetcher, jwt]

@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`It renders unchanged 1`] = `
+<div
+  class="w-full flex items-center justify-center"
+>
+  <div
+    class="relative rounded-full before:absolute before:inset-0 before:rounded-full after:absolute after:inset-0 after:rounded-full after:border-transparent after:animate-spin w-8 h-8 before:border-gray-300 after:border-b-slate-700 before:border-2 after:border-2"
+  />
+</div>
+`;

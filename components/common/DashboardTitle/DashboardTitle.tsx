@@ -20,7 +20,7 @@ const DashboardTitle = ({
   return (
     <div className={cn("flex space-x-4", {'items-center': !children, 'items-start': children}, className)}>
       <Badge>
-        <Icon className="w-5 h-5 sm:w-8 sm:h-8 text-white" />
+        <Icon className={cn("w-5 h-5 sm:w-8 sm:h-8 text-white", {'rotate-90': icon === 'logout'})} />
       </Badge>
       <div>
         <h2 className="text-2xl sm:text-4xl font-semibold tracking-wide text-slate-800">

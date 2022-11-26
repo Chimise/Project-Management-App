@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`It renders unchanged 1`] = `
+<div
+  class="w-full flex flex-col justify-center items-center space-y-4"
+>
+  <p
+    class="text-sm text-gray-700 text-light"
+  >
+    An error occured, please try again
+  </p>
+  <button
+    class="py-2 px-3 rounded-md bg-black/70 focus:ouline-none hover:bg-black"
+  >
+    Retry
+  </button>
+</div>
+`;

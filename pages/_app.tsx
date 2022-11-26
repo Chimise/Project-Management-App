@@ -9,7 +9,6 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import "@fontsource/roboto/900.css";
 import DashboardLayout from "../components/common/DashboardLayout";
-import InfoContextProvider from "../store/InfoContext";
 import Layout from "../components/common/Layout";
 import Auth from "../components/common/Auth";
 import AuthProvider from "../store/AuthContext";
@@ -43,38 +42,36 @@ function MyApp({ Component, pageProps }: App) {
   return (
     <AuthProvider>
       <UIContextProvider>
-        <InfoContextProvider>
-          <SWRConfig
-            value={{
-              fetcher: async (url: string, token?: string) => {
-                const data = await sendRequest<any, any>({
-                  method: "GET",
-                  url,
-                  token,
-                });
-                return data;
-              },
-              onErrorRetry: (err, key, config, revalidate, { retryCount }) => {
-                if (
-                  err instanceof RequestError &&
-                  (err.statusCode === 401 || err.statusCode === 404)
-                )
-                  return;
-                if (retryCount >= 3) return;
+        <SWRConfig
+          value={{
+            fetcher: async (url: string, token?: string) => {
+              const data = await sendRequest<any, any>({
+                method: "GET",
+                url,
+                token,
+              });
+              return data;
+            },
+            onErrorRetry: (err, key, config, revalidate, { retryCount }) => {
+              if (
+                err instanceof RequestError &&
+                (err.statusCode === 401 || err.statusCode === 404)
+              )
+                return;
+              if (retryCount >= 3) return;
 
-                setTimeout(() => revalidate({ retryCount }), 5000);
-              },
-            }}
-          >
-            {isAuth ? (
-              <Auth>
-                {getLayout(<Component {...pageProps} key={pathname} />)}
-              </Auth>
-            ) : (
-              getLayout(<Component {...pageProps} key={pathname} />)
-            )}
-          </SWRConfig>
-        </InfoContextProvider>
+              setTimeout(() => revalidate({ retryCount }), 5000);
+            },
+          }}
+        >
+          {isAuth ? (
+            <Auth>
+              {getLayout(<Component {...pageProps} key={pathname} />)}
+            </Auth>
+          ) : (
+            getLayout(<Component {...pageProps} key={pathname} />)
+          )}
+        </SWRConfig>
       </UIContextProvider>
     </AuthProvider>
   );

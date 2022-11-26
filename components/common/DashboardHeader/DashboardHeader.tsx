@@ -3,6 +3,8 @@ import { motion, Variants, AnimatePresence } from "framer-motion";
 import Badge from '../../ui/Badge';
 import {useRouter} from 'next/router'
 import {ArrowLeftIcon} from '@heroicons/react/24/outline';
+import useUser from '../../../hooks/useUser';
+
 
 interface DashboardHeaderProps {
   title?: string;
@@ -47,7 +49,8 @@ const panelVariant: Variants = {
 
 const DashboardHeader = ({ title, goBack = false }: DashboardHeaderProps) => {
   const [isHovering, setIsHovering] = useState(false);
-  const {back} = useRouter();
+  const {back, push} = useRouter();
+  const {firstName} = useUser();
   const onEnterHandler = () => {
     setIsHovering(true);
   };
@@ -60,16 +63,20 @@ const DashboardHeader = ({ title, goBack = false }: DashboardHeaderProps) => {
       {!goBack && <p className="text-gray-800 text-sm sm:text-base font-normal">
         Welcome to your <span className="font-medium text-black">{title}</span>
       </p>}
-      {goBack && <Badge color='bg-gray-100' onClick={() => back()}>
+      {goBack && <Badge role='button' aria-label='back-button' color='bg-gray-100' onClick={() => back()}>
         <ArrowLeftIcon className="stroke-gray-800 w-5 h-5 stroke-2" />
         </Badge>}
       <div className="flex items-center space-x-2">
       <span className="hidden sm:inline-block font-bold text-base">
-          Chisom
+          {firstName ? firstName : ''}
         </span>
         <Badge
         onMouseEnter={onEnterHandler}
         onMouseLeave={onLeaveHandler}
+        onClick={() => push('/dashboard/settings')}
+        role='button'
+        id='icon-button'
+        aria-label="show-settings"
       >
         <motion.svg
           xmlns="http://www.w3.org/2000/svg"
@@ -87,7 +94,7 @@ const DashboardHeader = ({ title, goBack = false }: DashboardHeaderProps) => {
       </div>
     </header>
     <AnimatePresence>
-      {isHovering && <motion.div className="hidden md:block absolute text-sm text-white rounded-md text-center bg-primary z-10 -bottom- right-0 p-2 w-40" variants={panelVariant} initial="hidden" animate="show" exit="hidden">
+      {isHovering && <motion.div role='dialog' aria-live="polite" aria-controls="icon-button" className="hidden md:block absolute text-sm text-white rounded-md text-center bg-primary z-10 -bottom- right-0 p-2 w-40" variants={panelVariant} initial="hidden" animate="show" exit="hidden">
           Beeb-boop! Would you like to change your profile settings?
       </motion.div>}
       </AnimatePresence>

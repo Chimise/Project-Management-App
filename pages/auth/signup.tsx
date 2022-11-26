@@ -1,30 +1,56 @@
 import React from "react";
 import Link from "next/link";
-import {motion} from 'framer-motion';
+import Head from "next/head";
+import { motion } from "framer-motion";
 import { useFormik } from "formik";
 import MobileLogo from "../../components/common/MobileDrawer/MobileLogo";
 import InputField from "../../components/ui/InputField";
 import { layoutVariants } from "../../animations";
 import useSignup from "../../hooks/useSignup";
+import { signUpSchema } from "../../utils/validate";
 
 const SignUpPage = () => {
   const sendRequest = useSignup();
-  const {values: {name, password, email}, touched, errors, handleBlur, handleChange, handleSubmit} = useFormik({
+  const {
+    values: { name, password, email },
+    touched,
+    errors,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+    isSubmitting
+  } = useFormik({
     initialValues: {
-      name: '',
-      email: '',
-      password: ''
+      name: "",
+      email: "",
+      password: "",
     },
     async onSubmit(values) {
       await sendRequest(values);
-    }
-  })
+    },
+    validationSchema: signUpSchema
+  });
   return (
-    <motion.div variants={layoutVariants} animate='visible' initial={false} exit='hidden' className="md:flex md:flex-row-reverse h-screen">
+    <motion.div
+      variants={layoutVariants}
+      animate="visible"
+      initial={false}
+      exit="hidden"
+      className="md:flex md:flex-row-reverse h-screen"
+    >
+      <Head>
+        <title>Create New Account</title>
+        <meta name='author' content='Chisom Promise' />
+        <meta name='description' content="Create new account with taskr to get started and manage your projects more effectively" />
+      </Head>
       <div className="md:flex-1 h-full py-5 md:py-10">
         <div className="w-[80%] flex flex-col h-full md:w-[80%] mx-auto">
           <div className="shrink-0">
-            <MobileLogo collapsed={false} />
+            <Link href="/">
+              <a>
+                <MobileLogo collapsed={false} />
+              </a>
+            </Link>
           </div>
           <div className="flex-1 flex items-center justify-center">
             <div className="w-full max-w-sm">
@@ -35,7 +61,7 @@ const SignUpPage = () => {
                 <InputField
                   error={Boolean(touched.name && errors.name)}
                   type="text"
-                  name='name'
+                  name="name"
                   rootClassName="w-full"
                   message={errors.name}
                   onChange={handleChange}
@@ -64,6 +90,7 @@ const SignUpPage = () => {
                 />
                 <button
                   type="submit"
+                  disabled={isSubmitting}
                   className="w-full block text-center py-2 bg-black text-white"
                 >
                   Sign up

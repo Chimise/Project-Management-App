@@ -17,7 +17,7 @@ import useUpdateComment from '../../../hooks/useUpdateComment';
 import useRemoveComment from '../../../hooks/useRemoveComment';
 import useUpdateTask from '../../../hooks/useUpdateTask';
 import useRemoveTask from '../../../hooks/useRemoveTask';
-import tasks from '../../../pages/api/tasks';
+import useUser from '../../../hooks/useUser';
 
 interface UpdateTaskProps {
     project: ProjectSchema;
@@ -27,6 +27,7 @@ interface UpdateTaskProps {
 
 const UpdateTask = ({project, task}: UpdateTaskProps) => {
     const [status, setStatus] = useState<Status>(task.status as Status);
+    const {firstName, user} = useUser();
     const addComment = useAddComment();
     const updateComment = useUpdateComment();
     const removeComment = useRemoveComment();
@@ -58,7 +59,7 @@ const UpdateTask = ({project, task}: UpdateTaskProps) => {
         await removeComment({id, projectId: project.id, taskId: task.id});
     }
 
-    const {values, handleSubmit, handleBlur, handleChange, touched, errors} = useFormik({initialValues: {
+    const {values, handleSubmit, handleBlur, handleChange, isSubmitting, touched, errors} = useFormik({initialValues: {
         name: task.name,
         description: task.description,
         tag: task.tag
@@ -77,7 +78,7 @@ const UpdateTask = ({project, task}: UpdateTaskProps) => {
         <TextBox className='flex-1 placeholder:text-2xl text-2xl md:placeholder:text-4xl md:text-4xl placeholder:font-normal text-slate-900 font-medium' placeholder='Enter Task name' error={Boolean(touched.name && errors.name)} name='name' onChange={handleChange} onBlur={handleBlur} value={values.name} />
         <DeleteButton onConfirm={() => removeTask({taskId: task.id, projectId: project.id})} />
     </div>
-    <p className="text-sm md:text-base text-gray-600 mt-2">Created by <span className='text-gray-800 font-medium'>Daniel</span> on {moment(project.created_at).format('dddd D MMMM, YYYY')} at {moment(project.created_at).format('HH:ss')}</p>
+    <p className="text-sm md:text-base text-gray-600 mt-2">Created by <span className='text-gray-800 font-medium'>{firstName ? firstName : ''}</span> on {moment(project.created_at).format('dddd D MMMM, YYYY')} at {moment(project.created_at).format('HH:ss')}</p>
     <div className={cn('flex items-center justify-between font-bold mt-3', {'text-primary': status === 0, 'text-progress': status === 1, 'text-completed': status === 2})}>
         <div className='flex items-center space-x-1'>
         <span className='text-xl'>#</span>
@@ -93,10 +94,10 @@ const UpdateTask = ({project, task}: UpdateTaskProps) => {
     <TextArea name='description' placeholder='Add Description...' className='w-full p-0 text-gray-800 mt-2' rows={2} value={values.description} onChange={handleChange} onBlur={handleBlur} error={Boolean(touched.description && errors.description)} />
     <div className='mt-2'>
         <p className='text-lg lg:text-xl font-medium mb-5'>Comments ({task.comments.length})</p>
-        <CommentList comments={task.comments} onAddComment={addCommentHandler} onAddFavorite={favoriteCommentHandler} onLikeComment={likeCommentHandler} onRemoveComment={removeCommentHandler} status={status} />
+        <CommentList name={user ? user.name : ''} comments={task.comments} onAddComment={addCommentHandler} onAddFavorite={favoriteCommentHandler} onLikeComment={likeCommentHandler} onRemoveComment={removeCommentHandler} status={status} />
     </div>
     <div className='flex justify-end mt-5'> 
-        <button type='submit' className='px-3 py-2 rounded-lg text-gray-800 transition-all duration-300 font-medium shadow-sm uppercase bg-gray-300 focus:outline-none hover:shadow-md hover:bg-gray-400/60'>Update Task</button>
+        <button type='submit' disabled={isSubmitting} className='px-3 py-2 rounded-lg text-gray-800 transition-all duration-300 font-medium shadow-sm uppercase bg-gray-300 focus:outline-none hover:shadow-md hover:bg-gray-400/60'>Update Task</button>
     </div>
   </form>)
 }

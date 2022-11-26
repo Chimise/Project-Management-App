@@ -5,17 +5,20 @@ import Badge from "../../ui/Badge";
 import { icons } from "../../../utils";
 import IconBox from "../IconBox";
 import PrimaryCard from "../../ui/PrimaryCard";
-import { ProjectSchema } from "../../../models/Project";
+import type { Project } from "../../../hooks/useProject";
 import { useRouter } from "next/router";
 import useTasks from '../../../hooks/useTasks';
 
 interface ProjectCardProps {
-  project: ProjectSchema;
+  project: Project;
   className?: string;
 }
 
 const ProjectCard = ({ project, className }: ProjectCardProps) => {
-  const {created, progress, completed, tasks} = useTasks(project.id.toString());
+  const created = project.tasks.filter(task => task.status === 0).length;
+  const progress = project.tasks.filter(task => task.status === 1).length;
+  const completed = project.tasks.filter(task => task.status === 2).length;
+  
 
   const [isHovering, setIsHovering] = useState(false);
   const router = useRouter();
@@ -56,23 +59,23 @@ const ProjectCard = ({ project, className }: ProjectCardProps) => {
         </Transition>
         <div className="flex-1" />
         
-        {tasks && <div className="flex space-x-3 py-2">
+      <div className="flex space-x-3 py-2">
           <IconBox
             status={0}
-            value={created!.length}
+            value={created}
             className="group-hover:text-primary"
           />
           <IconBox
             status={1}
-            value={progress!.length}
+            value={progress}
             className="group-hover:text-primary"
           />
           <IconBox
             status={2}
-            value={completed!.length}
+            value={completed}
             className="group-hover:text-primary"
           />
-        </div>}
+        </div>
       </div>
     </PrimaryCard>
   );
