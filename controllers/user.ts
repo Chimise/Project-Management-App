@@ -5,7 +5,7 @@ import User from "../models/User";
 import Boom from "@hapi/boom";
 import { getQuery } from "../utils";
 
-interface ExtendedRequest extends NextApiRequest {
+export interface ExtendedRequest extends NextApiRequest {
   user: User;
 }
 

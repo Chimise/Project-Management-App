@@ -46,12 +46,12 @@ class User {
 
   async save() {
     const knex = getKnex();
-
+    this.updated_at = new Date().toISOString();
     await knex<UserSchema>("users")
       .update({
         name: this.name,
         password: this.password,
-        updated_at: knex.fn.now(),
+        updated_at: this.updated_at,
       })
       .where("id", this.id);
   }

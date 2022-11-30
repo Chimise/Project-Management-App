@@ -11,7 +11,6 @@ import useViewReport from "../../hooks/useViewReport";
 import moment from "moment";
 import Error from '../../components/common/Error';
 import Loading from "../../components/common/Loading";
-import { mutate } from "swr";
 
 const ReportPage = () => {
  const {reports, unRead, isLoading, error, mutate} = useReports();

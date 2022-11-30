@@ -133,7 +133,9 @@ exports[`Render the Sign Up page unchanged 1`] = `
                   value=""
                 />
                 <span
+                  aria-label="view-password"
                   class="absolute bg-transparent text-gray-400 flex items-center justify-center inset-y-0 right-0 cursor-pointer w-6"
+                  role="button"
                 >
                   <svg
                     aria-hidden="true"

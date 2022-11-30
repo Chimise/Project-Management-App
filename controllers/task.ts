@@ -132,7 +132,7 @@ export const create: RequestHandler<ExtendedRequest, NextApiResponse> = async (r
         if(comments.length !== 0) {
           await task.insertComments(comments);
         }
-        console.log(task);
+        
         res.status(201).json(task);
     } catch (error) {
       console.log(error);

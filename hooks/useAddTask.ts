@@ -35,7 +35,7 @@ const useAddTask = () => {
         }
     }, [task, mutate, openToastHandler, error])
     
-    return sendRequest;
+    return {addTask: sendRequest, task};
 }
 
 export default useAddTask;

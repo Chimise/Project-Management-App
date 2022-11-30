@@ -4,6 +4,7 @@ const useRouter = jest.spyOn(require('next/router'), 'useRouter');
 export const mockPush = jest.fn();
 export const mockReplace = jest.fn();
 export const mockBack = jest.fn();
+export const mockPrefetch = jest.fn();
 
 export function mockUseRouter ({route = '', pathname = '', query = {}, asPath = ''}: {route?: string, pathname?: string , query?: object , asPath?: string} = {}) {
     useRouter.mockImplementation(() => ({
@@ -13,7 +14,9 @@ export function mockUseRouter ({route = '', pathname = '', query = {}, asPath = 
         asPath: asPath,
         back: mockBack,
         replace: mockReplace,
-        push: mockPush
+        push: mockPush,
+        isReady: true,
+        prefetch: mockPrefetch
     }))
 }
 

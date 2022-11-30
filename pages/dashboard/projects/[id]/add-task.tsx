@@ -18,15 +18,17 @@ import type { Comment } from "../../../../components/common/CommentCard";
 import useProject from "../../../../hooks/useProject";
 import useAddTask from "../../../../hooks/useAddTask";
 import useUser from "../../../../hooks/useUser";
-import { userAgent } from "next/server";
+import useLeavePageConfirm from "../../../../hooks/useLeavePageConfirm";
 
 const AddTaskPage = () => {
   const [status, setStatus] = useState<Status>(0);
+  const [hasChanged, setHasChanged] = useState(false);
   const { query, isReady, replace } = useRouter();
   const { project, error } = useProject(getQuery(query.id));
-  const sendRequest = useAddTask();
+  const {addTask, task} = useAddTask();
   const [comments, setComments] = useState<Comment[]>([]);
   const { firstName, user } = useUser();
+  useLeavePageConfirm(hasChanged);
   const {
     values,
     handleSubmit,
@@ -35,6 +37,7 @@ const AddTaskPage = () => {
     touched,
     errors,
     isSubmitting,
+    resetForm
   } = useFormik({
     initialValues: {
       name: "",
@@ -42,11 +45,11 @@ const AddTaskPage = () => {
       tag: "",
     },
     onSubmit: async (values) => {
-      const projectId = Array.isArray(query.id) ? query.id[0] : query.id;
+      const projectId = getQuery(query.id);
       if (projectId) {
         const taskStatus = status as number;
         const project_id = parseInt(projectId);
-        await sendRequest({
+        await addTask({
           ...values,
           status: taskStatus,
           project_id,
@@ -62,12 +65,47 @@ const AddTaskPage = () => {
   });
   useEffect(() => {
     if (isReady && query.status) {
-      const status = Array.isArray(query.status)
-        ? query.status[0]
-        : query.status;
-      setStatus(parseInt(status) as Status);
+      const status = getQuery(query.status)!;
+      const parsedStatus = parseInt(status) > 2 ? 0 : parseInt(status);
+      setStatus(parsedStatus as Status);
     }
   }, [query, isReady]);
+
+  useEffect(() => {
+    if(task) {
+      const originalStatus = getQuery(query.status) || "0";
+      const parsedStatus =
+      parseInt(originalStatus) > 2 ? 0 : parseInt(originalStatus);
+      resetForm();
+      setComments([]);
+      setStatus(parsedStatus as Status);
+    }
+  }, [task, resetForm, query]);
+
+  useEffect(() => {
+    let changed = false;
+    const originalStatus = getQuery(query.status) || "0";
+    const parsedStatus =
+      parseInt(originalStatus) > 2 ? 0 : parseInt(originalStatus);
+
+    if (values.name !== "") {
+      changed = true;
+    }
+    if (values.description !== "") {
+      changed = true;
+    }
+    if (values.tag !== "") {
+      changed = true;
+    }
+    if (comments.length !== 0) {
+      changed = true;
+    }
+
+    if (status !== parsedStatus) {
+      changed = true;
+    }
+    setHasChanged(changed);
+  }, [values, status, comments, query.status]);
 
   useEffect(() => {
     if (error) {
@@ -220,7 +258,14 @@ const AddTaskPage = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-3 py-2 rounded-lg text-gray-800 transition-all duration-300 font-medium shadow-sm uppercase bg-gray-300 focus:outline-none hover:shadow-md hover:bg-gray-400/60"
+              data-changed={hasChanged}
+              className={cn(
+                "px-3 py-2 rounded-lg transition-all duration-300 font-medium shadow-sm uppercase focus:outline-none hover:shadow-m",
+                {
+                  "bg-gray-300 text-gray-800 hover:bg-gray-400/60": !hasChanged,
+                  "bg-gray-600 text-white hover:bg-gray-800": hasChanged,
+                }
+              )}
             >
               Create Task
             </button>
