@@ -28,7 +28,7 @@ const Accordion = ({
   const [isVisible, setIsVisible] = useState(false);
 
   return (
-    <Disclosure as="div" className="w-full transition-all duration-200 hover:-translate-x-1 hover:bg-primary/10">
+    <Disclosure data-viewed={viewed} as="div" className="w-full transition-all duration-200 hover:-translate-x-1 hover:bg-primary/10">
       {({ open }) => (
         <>
           <Disclosure.Button
@@ -55,7 +55,7 @@ const Accordion = ({
                 leaveFrom="opacity-1 translate-x-0"
                 leaveTo="opacity-0 translate-x-full"
               >
-                <div className="text-primary text-sm">Click to {open ? "Close" : "Open"}</div>
+                <div  className="text-primary text-sm">Click to {open ? "Close" : "Open"}</div>
               </Transition>
             </div>
           </Disclosure.Button>

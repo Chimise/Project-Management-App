@@ -44,6 +44,8 @@ const InputField = ({
             {...props}
           />
           <span
+            role='button'
+            aria-label='view-password'
             onClick={() => setShowPassword((prev) => !prev)}
             className="absolute bg-transparent text-gray-400 flex items-center justify-center inset-y-0 right-0 cursor-pointer w-6"
           >

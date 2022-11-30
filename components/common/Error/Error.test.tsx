@@ -2,8 +2,6 @@ import "@testing-library/jest-dom";
 import {
   render,
   user,
-  waitFor,
-  waitForElementToBeRemoved,
 } from "../../../test/test-utils";
 import router, {
   mockUseRouter,

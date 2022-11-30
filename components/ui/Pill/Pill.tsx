@@ -16,6 +16,8 @@ const Pill = forwardRef<HTMLDivElement, PillProps>(
           { "inline-block": value !== 0, hidden: value === 0 || !value },
           className
         )}
+        role={'presentation'}
+        aria-label='pill'
       >
         {value}
       </div>

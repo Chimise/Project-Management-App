@@ -1,5 +1,4 @@
 import { getAllByLabelText, prettyDOM, render, user, waitFor, waitForElementToBeRemoved, act } from "../test/test-utils";
-import { rest } from "msw";
 import "@testing-library/jest-dom";
 import SignUpPage from "../pages/auth/signup";
 import "whatwg-fetch";

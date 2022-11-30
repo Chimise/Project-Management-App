@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import cn from 'classnames';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -18,6 +18,7 @@ import useRemoveComment from '../../../hooks/useRemoveComment';
 import useUpdateTask from '../../../hooks/useUpdateTask';
 import useRemoveTask from '../../../hooks/useRemoveTask';
 import useUser from '../../../hooks/useUser';
+import useLeavePageConfirm from '../../../hooks/useLeavePageConfirm';
 
 interface UpdateTaskProps {
     project: ProjectSchema;
@@ -27,12 +28,15 @@ interface UpdateTaskProps {
 
 const UpdateTask = ({project, task}: UpdateTaskProps) => {
     const [status, setStatus] = useState<Status>(task.status as Status);
+    const [hasChanged, setHasChanged] = useState(false);
     const {firstName, user} = useUser();
     const addComment = useAddComment();
     const updateComment = useUpdateComment();
     const removeComment = useRemoveComment();
     const updateTask = useUpdateTask();
     const removeTask = useRemoveTask();
+    useLeavePageConfirm(hasChanged);
+
 
     const addCommentHandler = async (comment: Comment) => {
         await addComment({...comment, task_id: task.id, project_id: project.id});
@@ -72,6 +76,23 @@ const UpdateTask = ({project, task}: UpdateTaskProps) => {
         tag: Yup.string().required()
     })});
 
+    useEffect(() => {
+        let changed = false;
+        if(values.name !== task.name) {
+            changed = true;
+        }
+        if(values.description !== task.description) {
+            changed = true;
+        }
+        if(values.tag !== task.tag) {
+            changed = true;
+        }
+        if(status !== task.status) {
+            changed = true;
+        }
+        setHasChanged(changed);
+    }, [task, values, status])
+
 
     return (<form onSubmit={handleSubmit} className='mt-1'>
     <div className='flex space-x-6 items-center' >
@@ -97,7 +118,7 @@ const UpdateTask = ({project, task}: UpdateTaskProps) => {
         <CommentList name={user ? user.name : ''} comments={task.comments} onAddComment={addCommentHandler} onAddFavorite={favoriteCommentHandler} onLikeComment={likeCommentHandler} onRemoveComment={removeCommentHandler} status={status} />
     </div>
     <div className='flex justify-end mt-5'> 
-        <button type='submit' disabled={isSubmitting} className='px-3 py-2 rounded-lg text-gray-800 transition-all duration-300 font-medium shadow-sm uppercase bg-gray-300 focus:outline-none hover:shadow-md hover:bg-gray-400/60'>Update Task</button>
+        <button type='submit' data-changed={hasChanged} disabled={isSubmitting} className={cn('px-3 py-2 rounded-lg transition-all duration-300 font-medium shadow-sm uppercase focus:outline-none hover:shadow-md', {'bg-gray-300 text-gray-800 hover:bg-gray-400/60': !hasChanged, 'bg-gray-600 text-white hover:bg-gray-800': hasChanged})}>Update Task</button>
     </div>
   </form>)
 }

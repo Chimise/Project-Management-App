@@ -19,7 +19,7 @@ const TaskList = ({project, statusType}: TaskListProps) => {
     const filteredTask = data[statusType];
 
     if(!filteredTask || filteredTask.length === 0) {
-        return (<div className='flex items-center text-gray-400 justify-end space-y-4 flex-col w-full h-40'>
+        return (<div data-testid='fallback-layout' className='flex items-center text-gray-400 justify-end space-y-4 flex-col w-full h-40'>
             <FolderOpenIcon className='w-12 h-12' />
             <div>Looks like this list is empty!</div>
         </div>)

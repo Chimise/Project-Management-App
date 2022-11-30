@@ -37,12 +37,12 @@ const SelectStatus = ({status, onChange}: SelectStatusProps) => {
         {isVisible && <div className='flex space-x-2'>
             {statuses.map(status => {
                 const Icon = icons[iconNames[status]];
-                return <Badge onClick={() => changeStatusHandler(status)} color={cn({'bg-primary': status === 0, 'bg-progress': status === 1, 'bg-completed': status === 2})} key={status}>
+                return <Badge role='button' aria-label={`status-${iconNames[status]}`} onClick={() => changeStatusHandler(status)} color={cn({'bg-primary': status === 0, 'bg-progress': status === 1, 'bg-completed': status === 2})} key={status}>
                     <Icon className='text-white h-5 w-5 md:h-7 md:w-7' />
                 </Badge>
             })}
             </div>}
-        {!isVisible && <Badge onClick={handleClick} color={cn({'bg-primary': status === 0, 'bg-progress': status === 1, 'bg-completed': status === 2})}>
+        {!isVisible && <Badge role='button' aria-label={`current-status`} data-status={status}  onClick={handleClick} color={cn({'bg-primary': status === 0, 'bg-progress': status === 1, 'bg-completed': status === 2})}>
             <Icon className='text-white h-5 w-5 md:h-7 md:w-7' />
             </Badge>}
     </div>

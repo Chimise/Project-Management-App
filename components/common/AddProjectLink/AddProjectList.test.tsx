@@ -12,7 +12,7 @@ afterEach(() => {
   jest.useRealTimers();
 });
 
-export const projects = [
+const projects = [
   {
     id: 1,
     tasks: [],

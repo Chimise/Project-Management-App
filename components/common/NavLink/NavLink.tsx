@@ -85,6 +85,7 @@ const NavLink = ({
           },
           className
         )}
+        data-current={isActive}
         onClick={clickHandler}
       >
         <span className={cn("inline-flex items-center relative flex-1 space-x-2", {'justify-center': collapsed})}>

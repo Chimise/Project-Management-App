@@ -1,8 +1,8 @@
 import "whatwg-fetch";
 import "@testing-library/jest-dom";
-import { render, user, screen, waitForElementToBeRemoved} from "../../../test/test-utils";
+import { render, user, waitForElementToBeRemoved} from "../../../test/test-utils";
 import server from "../../../test/server";
-import router, { mockPush, mockUseRouter, mockBack} from "../../../test/router";
+import router, { mockPush, mockUseRouter} from "../../../test/router";
 import useAuth from "../../../hooks/useAuth";
 import MobileHeader from './MobileHeader';
 

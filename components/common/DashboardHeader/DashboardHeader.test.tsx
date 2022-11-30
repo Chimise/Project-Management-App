@@ -59,7 +59,7 @@ test('Checks whether the the popup is displayed when the the profile button is h
 })
 
 test('Checks that the go back button is visible when the goBack prop is true and that it works', async () => {
-    const {getByRole, getByText} = render(<DashboardHeader title='Products' goBack={true} />);
+    const {getByRole} = render(<DashboardHeader title='Products' goBack={true} />);
     const goBack = getByRole('button', {name: 'back-button'});
     expect(goBack).toBeInTheDocument();
     await user.click(goBack);

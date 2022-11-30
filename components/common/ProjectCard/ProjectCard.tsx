@@ -7,7 +7,6 @@ import IconBox from "../IconBox";
 import PrimaryCard from "../../ui/PrimaryCard";
 import type { Project } from "../../../hooks/useProject";
 import { useRouter } from "next/router";
-import useTasks from '../../../hooks/useTasks';
 
 interface ProjectCardProps {
   project: Project;
