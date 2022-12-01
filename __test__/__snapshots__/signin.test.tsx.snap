@@ -152,7 +152,7 @@ exports[`render the SignIn page unchanged 1`] = `
               class="pl-2 inline-block text-black font-medium"
               href="/auth/signup"
             >
-              Login in here
+              Sign Up
             </a>
           </p>
         </div>

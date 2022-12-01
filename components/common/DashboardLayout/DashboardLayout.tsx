@@ -159,7 +159,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
             message={message}
             onClose={closeToastHandler}
           />
-          <div className="bg-white flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+          <div className="bg-white pb-10 md:pb-0 flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
             <main className="flex-1">{children}</main>
             <DashboardFooter />
           </div>

@@ -13,7 +13,6 @@
  import { getKnex } from "../../utils/connectDb";
  import {logIn} from '../../controllers/auth';
  import isAuth from "../../middlewares/isAuth";
-import { NextResponse } from "next/server";
  
  const knex = getKnex();
  

@@ -35,7 +35,7 @@ exports[`It renders unchanged 1`] = `
       class="flex flex-1 px-3 items-center justify-between"
     >
       <h6
-        class="text-base md:text-lg text-black font-medium"
+        class="text-base truncate md:text-lg text-black font-medium"
       >
         This is an accordion
       </h6>

@@ -100,7 +100,7 @@ const SignUpPage = () => {
                 Already have an account?{" "}
                 <Link href="/auth/signin">
                   <a className="pl-2 inline-block text-black font-medium">
-                    Log in here
+                    Log in
                   </a>
                 </Link>
               </p>

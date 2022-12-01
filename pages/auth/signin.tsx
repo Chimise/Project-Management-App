@@ -93,7 +93,7 @@ const LoginPage = () => {
                 Don&apos;t have an account?{" "}
                 <Link href="/auth/signup">
                   <a className="pl-2 inline-block text-black font-medium">
-                    Login in here
+                    Sign Up
                   </a>
                 </Link>
               </p>

@@ -45,7 +45,7 @@ const Accordion = ({
               )}
             </div>
             <div className="flex flex-1 px-3 items-center justify-between">
-            <h6 className={cn('text-base md:text-lg text-black', {'font-medium': !viewed, 'font-normal': viewed})}>{title}</h6>
+            <h6 className={cn('text-base truncate md:text-lg text-black', {'font-medium': !viewed, 'font-normal': viewed})}>{title}</h6>
               <Transition
                 show={isVisible}
                 enter="transition-all duration-200"
@@ -55,7 +55,7 @@ const Accordion = ({
                 leaveFrom="opacity-1 translate-x-0"
                 leaveTo="opacity-0 translate-x-full"
               >
-                <div  className="text-primary text-sm">Click to {open ? "Close" : "Open"}</div>
+                <div  className="text-primary hidden md:block text-xs sm:text-sm">Click to {open ? "Close" : "Open"}</div>
               </Transition>
             </div>
           </Disclosure.Button>

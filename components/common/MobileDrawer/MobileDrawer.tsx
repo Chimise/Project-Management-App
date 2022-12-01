@@ -113,6 +113,7 @@ const MobileDrawer = ({ visible, onClose }: MobileDashboardLayoutProps) => {
                   <NavLink
                     className="capitalize"
                     key={href}
+                    onClick={onClose}
                     collapsed={false}
                     pillContent={
                       href === "messages"
@@ -136,6 +137,7 @@ const MobileDrawer = ({ visible, onClose }: MobileDashboardLayoutProps) => {
                     collapsed={false}
                     href={`/dashboard/${href}`}
                     icon={icon}
+                    onClick={onClose}
                   >
                     {title}
                   </NavLink>

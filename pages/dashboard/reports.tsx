@@ -58,7 +58,7 @@ const ReportPage = () => {
           <p className="text-gray-800 text-sm md:text-base">{report.report.content}</p>
           <div className="mt-2 text-justify text-primary text-xs md:text-sm font-medium flex items-center justify-between">
             <span className="bg-primary text-white p-1">{report.report.action}</span>
-            <span>{moment(report.created_at, true).format('dddd D MMMM, YYYY | HH:ss')}</span>
+            <span className="hidden md:inline">{moment(report.created_at, true).format('dddd D MMMM, YYYY | HH:ss')}</span>
           </div>
           </div>
         </Accordion>))}

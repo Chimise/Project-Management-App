@@ -35,7 +35,7 @@ const AddComment = ({onAddComment}: AddCommentProps) => {
     }
 
     return (<div className='flex justify-start pl-5 lg:pl-7 pr-2'>
-        {isVisible && <div className='flex items-end space-x-3'>
+        {isVisible && <div className='flex flex-col space-y-3 md:flex-row items-end md:space-x-3'>
             <TextBox onKeyDown={keyDownHandler} error={false} value={comment} onChange={handleChange} className='border-b-gray-300 h-11 w-auto lg:w-72 border-0 focus:border-2 p-3' placeholder='Add A Comment' />
             <Button onClick={commentAddHandler} className='!font-extralight' type='button'>Comment</Button>
         </div>}

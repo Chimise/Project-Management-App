@@ -70,7 +70,7 @@ const MessagesPage = () => {
                   </p>
                   <div className="mt-2 text-justify text-primary text-xs md:text-sm font-medium flex items-center justify-between">
                     <span>{user ? user.name : ''}</span>
-                    <span>
+                    <span className="hidden md:inline">
                       {moment(message.created_at, true).format(
                         "dddd D MMMM, YYYY | HH:ss"
                       )}

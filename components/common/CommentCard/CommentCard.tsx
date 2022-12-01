@@ -39,16 +39,16 @@ const CommentCard = ({ status, comment, onAddFavourite, onLike, onRemove, name }
           })}
         />
       </div>
-      <div className="flex-1 flex items-center space-x-1.5 lg:space-x-2 px-3 lg:px-4">
-        <div className="flex-1">
-          <h4 className="font-semibold text-lg text-gray-900">{name}</h4>
+      <div className="flex-1 flex flex-col space-y-2 md:space-y-0 md:flex-row items-center space-x-1.5 lg:space-x-2 px-3 lg:px-4">
+        <div className="md:flex-1">
+          <h4 className="font-semibold text-sm md:text-lg text-gray-900">{name}</h4>
           <div className="block font-light text-sm text-gray-700 mt-0.5">
-            {moment(created_at).format("dddd D MMMM, YYYY")} |{" "}
-            <time>{moment(created_at).format("H:ss")}</time>
+            {moment(created_at).format("dddd D MMMM, YYYY")}
+            <time className="hidden sm:inline"> |{" "}{moment(created_at).format("H:ss")}</time>
           </div>
           <p className="text-gray-700 text-base mt-1">{message}</p>
         </div>
-        <div className={cn("shrink-0 flex items-center space-x-2")}>
+        <div className={cn("shrink-0 w-full md:w-auto flex items-center space-x-0 justify-evenly md:justify-start md:space-x-2")}>
           <StarIcon role='button' onClick={onLike} className={cn("w-5 h-5 cursor-pointer transition-transform duration-200 hover:scale-125 lg:w-7 lg:h-7", {'text-primary': status === 0, 'text-progress': status === 1, 'text-completed': status === 2}, {'opacity-100': like, 'opacity-50': !like})} />
           <HeartIcon role='button' onClick={onAddFavourite} className={cn("w-5 h-5 cursor-pointer transition-transform duration-200 hover:scale-125 lg:w-7 lg:h-7", {'text-primary': status === 0 , 'text-progress': status === 1, 'text-completed': status === 2}, {'opacity-100': favorite, 'opacity-50': !favorite})} />
           <TrashIcon role='button' onClick={onRemove} className={cn("w-5 h-5 cursor-pointer transition-transform duration-200 hover:scale-125 lg:w-7 opacity-50 lg:h-7", {'text-primary': status === 0, 'text-progress': status === 1, 'text-completed': status === 2 }, )} />
