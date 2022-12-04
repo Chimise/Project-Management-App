@@ -138,7 +138,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                   <NavLink
                     onClick={logoutHandler}
                     className="capitalize"
-                    collapsed={false}
+                    collapsed={isCollapsed}
                     icon={"logout"}
                   >
                     Logout
