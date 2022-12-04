@@ -73,6 +73,7 @@ const AddProjectLink = ({
           },
           className
         )}
+        defaultOpen={true}
       >
         {({ open }) => (
           <>

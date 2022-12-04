@@ -49,7 +49,7 @@ describe("The add project link behaves properly when not collapsed", () => {
   test("Open the Disclosure and Ensure that the project is created when the submit button is clicked", async () => {
     const handler = jest.fn();
     const text = "My first project";
-    const { findByPlaceholderText, getByRole, getAllByRole } = render(
+    const { findByPlaceholderText, getAllByRole, getByRole } = render(
       <AddProjectLink
         onAddProject={handler}
         projects={projects}
@@ -60,8 +60,6 @@ describe("The add project link behaves properly when not collapsed", () => {
         Click Me
       </AddProjectLink>
     );
-
-    await user.click(getByRole("button"));
 
     const input = await findByPlaceholderText(/add project/i);
     expect(input).toBeInTheDocument();
