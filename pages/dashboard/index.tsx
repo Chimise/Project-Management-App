@@ -14,8 +14,8 @@ const DashboardPage = () => {
   const { firstName } = useUser();
   const router = useRouter();
   const { projects } = useProjects();
-  const { reports } = useReports();
-  const { messages } = useMessages();
+  const { unRead: unReadMessages } = useReports();
+  const { unRead: unReadReports } = useMessages();
 
   return (
     <Container>
@@ -77,8 +77,8 @@ const DashboardPage = () => {
                   className="text-gray-700 font-medium group-hover:text-black"
                   id="report"
                 >
-                  {reports ? reports.length : null}{" "}
-                  {reports ? (reports.length > 1 ? "reports" : "report") : null}
+                  {unReadReports !== undefined ? unReadReports : null}{" "}
+                  {unReadReports !== undefined ? (unReadReports > 1 ? "new reports" : "new report") : null}
                 </span>
               </span>
             </IconList>
@@ -98,11 +98,11 @@ const DashboardPage = () => {
                   className="text-gray-700 font-medium group-hover:text-black"
                   id="message"
                 >
-                  {messages ? messages.length : null}{" "}
-                  {messages
-                    ? messages.length > 1
-                      ? "messages"
-                      : "message"
+                  {unReadMessages !== undefined ? unReadMessages : null}{" "}
+                  {unReadMessages !== undefined
+                    ? unReadMessages > 1
+                      ? "new messages"
+                      : "new message"
                     : null}
                 </span>
               </span>
