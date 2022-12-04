@@ -73,7 +73,6 @@ const AddProjectLink = ({
           },
           className
         )}
-        defaultOpen={true}
       >
         {({ open }) => (
           <>
@@ -97,7 +96,7 @@ const AddProjectLink = ({
               />
               {!collapsed && <span className="flex-1">{children}</span>}
               {!collapsed && (
-                <Disclosure.Button className="focus-visible:outline-none shrink-0">
+                <Disclosure.Button aria-label="open-button" className="focus-visible:outline-none shrink-0">
                   <PlayIcon
                     className={cn(
                       "w-4 h-4 font-bold text-black transition-transform duration-150",

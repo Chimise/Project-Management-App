@@ -60,6 +60,8 @@ describe("The add project link behaves properly when not collapsed", () => {
         Click Me
       </AddProjectLink>
     );
+    
+    await user.click(getByRole("button", {name: 'open-button'}));
 
     const input = await findByPlaceholderText(/add project/i);
     expect(input).toBeInTheDocument();
