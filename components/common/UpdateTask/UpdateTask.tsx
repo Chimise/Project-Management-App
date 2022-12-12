@@ -92,6 +92,8 @@ const UpdateTask = ({ project, task }: UpdateTaskProps) => {
         id: task.id,
         status,
       });
+      // Reset the changed state of the form after submitting
+      setHasChanged(false);
     },
     validationSchema: Yup.object({
       name: Yup.string().required(),
