@@ -20,7 +20,7 @@ const MobileHeader = () => {
   return (
     <>
       <header className="md:hidden flex bg-white py-4 px-8 justify-between items-center h-[72px]">
-        <span data-testid='logo' onClick={() => push("/")}>
+        <span data-testid='logo' onClick={() => push("/dashboard")}>
           <MobileLogo />
         </span>
         <div>
