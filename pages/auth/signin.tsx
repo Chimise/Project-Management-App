@@ -21,8 +21,8 @@ const LoginPage = () => {
     isSubmitting
   } = useFormik({
     initialValues: {
-      email: "",
-      password: "",
+      email: "testuser@gmail.com",
+      password: "testpassword",
     },
     async onSubmit(values) {
       await sendRequest(values);
