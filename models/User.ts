@@ -3,9 +3,13 @@ import { getKnex } from "../utils/connectDb";
 import type { BaseSchema } from "../utils";
 import Project, { ProjectSchema } from "./Project";
 import UserMessage from './UserMessage';
-import type {Message} from './UserMessage';
+import type { Message } from './UserMessage';
 import type { Report } from "./UserReport";
 import UserReport from "./UserReport";
+import testUser from '../testUser';
+import data from '../knex/data.js';
+import {TaskSchema} from "./Task";
+import { CommentSchema } from "./Comment";
 
 export interface UserSchema extends BaseSchema {
   name: string;
@@ -13,11 +17,6 @@ export interface UserSchema extends BaseSchema {
   password: string;
 }
 
-
-
-
-
-// type InsertUser = Pick<User, 'name'|'email'|'password'> & Partial<Pick<User, 'created_at' | 'updated_at'>>
 
 class User {
   id: number;
@@ -94,7 +93,7 @@ class User {
   async createMessages() {
     const knex = getKnex();
     const messageIds = await knex<Message>('messages').select('id');
-    const userMessages = messageIds.map(({id}) => {
+    const userMessages = messageIds.map(({ id }) => {
       return {
         user_id: this.id,
         message_id: id,
@@ -106,7 +105,7 @@ class User {
   async createReports() {
     const knex = getKnex();
     const reportIds = await knex<Report>('reports').select('id');
-    const userReports = reportIds.map((({id}) => {
+    const userReports = reportIds.map((({ id }) => {
       return {
         user_id: this.id,
         report_id: id
@@ -114,6 +113,8 @@ class User {
     }));
     await UserReport.insert(userReports);
   }
+
+
 
   static async hashPassword(password: string) {
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -167,6 +168,36 @@ class User {
     value.password = await User.hashPassword(value.password);
     const users = await knex<UserSchema>("users").insert(value).returning("*");
     return new User(users[0]);
+  }
+
+  // Create a test user
+  static async createTestUser() {
+    const knex = getKnex();
+    let user = (await knex<UserSchema>('users').where({ email: testUser.email }).select('*'))[0];
+    if (!user) {
+      // Create a test user if does not exist already
+      user = (await knex<UserSchema>('users').insert(testUser).returning('*'))[0];
+      // Create a project for the test user
+      const project = (await knex<ProjectSchema>('projects').insert({name: 'Getting Started', user_id: user.id}, '*'))[0];
+      // Create a task for the above project
+      const task = (await knex<TaskSchema>('tasks').insert({name: 'Create Your Own Project!', description: 'Use Taskr to plan and organize your own project', tag: 'SETUP', status: 0, project_id: project.id, user_id: user.id}, 'id'))[0];
+      //Add comments to the created tasks
+      await knex<CommentSchema>('comments').insert([{task_id: task.id, user_id: user.id, message: "You can create your own project by navigating to the 'Project' page and pressing the 'Create Project' button!"}, {message: "You can change the status of your current task by pressing the icon next to 'Status'", user_id: user.id, task_id: task.id}]);
+      
+      const messages = data.messages.map(message => ({ user_id: user.id, message_id: message.id }));
+
+      const reports = data.reports.map(report => ({ user_id: user.id, report_id: report.id }));
+      // Insert messages
+      await knex('user_reports').insert(reports);
+      // Insert reports
+      await knex('user_messages').insert(messages);
+    }
+
+    return new this(user);
+  }
+
+  static isTestUser(data: { email: string; password: string; }) {
+    return data.email === testUser.email && data.password === testUser.password
   }
 
   toJSON() {

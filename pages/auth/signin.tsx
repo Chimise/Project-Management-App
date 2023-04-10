@@ -8,6 +8,7 @@ import InputField from "../../components/ui/InputField";
 import { layoutVariants } from "../../animations";
 import { logInSchema } from "../../utils/validate";
 import useLogin from "../../hooks/useLogin";
+import testUser from "../../testUser";
 
 const LoginPage = () => {
   const sendRequest = useLogin();
@@ -21,8 +22,8 @@ const LoginPage = () => {
     isSubmitting
   } = useFormik({
     initialValues: {
-      email: "testuser@gmail.com",
-      password: "testpassword",
+      email: testUser.email,
+      password: testUser.password,
     },
     async onSubmit(values) {
       await sendRequest(values);

@@ -44,7 +44,16 @@ export const updateOne: RequestHandler<
 > = async (req, res, next) => {
   try {
     const user = req.user;
+    
     const { name, password } = await updateUserSchema.validate(req.body);
+
+    // If it is a test user, do not save to database, just fake the response
+    if(User.isTestUser(user)) {
+      user.name = name || user.name;
+      user.password = password || user.password;
+      return res.json(user);
+    }
+    
     if (name) {
       user.name = name;
     }

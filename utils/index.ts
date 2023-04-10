@@ -10,8 +10,8 @@ import {
   Square3Stack3DIcon,
 } from "@heroicons/react/24/solid";
 import { JSXElementConstructor } from "react";
-import Boom from "@hapi/boom";
 import RequestError from "./RequestError";
+
 
 export type Icons =
   | "dashboard"

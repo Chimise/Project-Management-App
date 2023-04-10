@@ -28,7 +28,16 @@ export const signUp: RequestHandler<NextApiRequest, NextApiResponse> = async (re
 export const logIn: RequestHandler<NextApiRequest, NextApiResponse> = async (req, res, next) => {
     try {
         const body = await logInSchema.validate(req.body);
+
+        // If the email and password is that of a test user, login the test user;
+        if(User.isTestUser(body)) {
+            const user = await User.createTestUser();
+            const token = jwt.sign({id: user.id}, process.env.JWT_SECRET!, {expiresIn: '24h'});
+            return res.json({user, jwt: token});
+        }
+
         const user = await User.findOne({email: body.email});
+
         if(!user) {
             return res.status(401).json(Boom.unauthorized("Invalid Credentials"));
         }
