@@ -4,13 +4,14 @@ import Router from 'next/router';
 const useLeavePageConfirm = (isConfirm: boolean, message: string = 'You have unsaved changes, are you sure you want to leave?') => {
     useEffect(() => {
         const handler = (event: BeforeUnloadEvent) => {
-            if(!isConfirm) {
-                return;
-            }
             (event || window.event).returnValue = message;
             return message;
         }
-        window.addEventListener('beforeunload', handler);
+        
+        if(isConfirm) {
+            window.addEventListener('beforeunload', handler);
+        }
+        
         return () => {
             window.removeEventListener('beforeunload', handler);
         }
